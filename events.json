@@ -1,0 +1,51 @@
+{
+  "events": [
+    {
+      "id": 1780578844522,
+      "title": "Temple du Son",
+      "date": "2026-06-14",
+      "timeStart": "0930",
+      "timeEnd": "1130",
+      "type": "immersion",
+      "place": "Tente Rouge, Saint-Gilles",
+      "mapsLink": "https://www.google.com/maps/place/La+Tente+Rouge+-+Espace+Holistique+%26+Bien+%C3%AAtre+%C3%A0+La+R%C3%A9union/@-21.051628,55.2245631,814m/data=!3m2!1e3!4b1!4m6!3m5!1s0x2182911cab498dd9:0x5ca28d77bae78180!8m2!3d-21.051633!4d55.227138!16s%2Fg%2F11x7rkp3ts?entry=ttu&g_ep=EgoyMDI2MDYwMS4wIKXMDSoASAFQAw%3D%3D",
+      "ticketUrl": "https://www.billetweb.fr/pro/sea",
+      "imageUrl": ""
+    },
+    {
+      "id": 1780580079818,
+      "title": "Le Message du Son",
+      "date": "2026-07-04",
+      "timeStart": "0930",
+      "timeEnd": "1130",
+      "type": "immersion",
+      "place": "Om Chazen, La Possession",
+      "mapsLink": "https://maps.app.goo.gl/u82uU76XWi71VES48",
+      "ticketUrl": "https://www.billetweb.fr/pro/sea",
+      "imageUrl": ""
+    }
+  ],
+  "db": {
+    "places": [
+      {
+        "name": "Om Chazen, La Possession",
+        "maps": "https://maps.app.goo.gl/u82uU76XWi71VES48"
+      },
+      {
+        "name": "Tente Rouge, Saint-Gilles",
+        "maps": "https://www.google.com/maps/place/La+Tente+Rouge+-+Espace+Holistique+%26+Bien+%C3%AAtre+%C3%A0+La+R%C3%A9union/@-21.051628,55.2245631,814m/data=!3m2!1e3!4b1!4m6!3m5!1s0x2182911cab498dd9:0x5ca28d77bae78180!8m2!3d-21.051633!4d55.227138!16s%2Fg%2F11x7rkp3ts?entry=ttu&g_ep=EgoyMDI2MDYwMS4wIKXMDSoASAFQAw%3D%3D"
+      }
+    ],
+    "tickets": [
+      {
+        "label": "BilletWeb général",
+        "url": "https://www.billetweb.fr/pro/sea"
+      }
+    ],
+    "images": []
+  },
+  "defaultImg": {
+    "label": "S.E.A Logo",
+    "url": "https://raw.githubusercontent.com/sea-healing-sound/Calendrier/main/S.E.A-Logo-800x450.jpg"
+  }
+}
