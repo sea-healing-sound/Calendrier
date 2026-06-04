@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>S·E·A — Administration</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --tc:#B5522A; --tc-l:#d4724a; --tc-p:#f5e8e2;
+  --gold:#c9a84c; --td:#3a2a1e; --tm:#6b4c38; --ts:#9a7a68;
+}
+body { font-family:'Lato',sans-serif; font-weight:300; background:linear-gradient(160deg,#cde4ec 0%,#ddecd4 30%,#f0e8d8 60%,#e8d4d0 100%); min-height:100vh; color:var(--td); }
+
+/* LOGIN */
+#loginScreen { position:fixed; inset:0; background:linear-gradient(160deg,#cde4ec 0%,#ddecd4 40%,#f0e8d8 70%,#e8d4d0 100%); display:flex; align-items:center; justify-content:center; z-index:999; padding:1.5rem; }
+.login-card { background:rgba(255,255,255,.65); border:1px solid rgba(181,82,42,.18); border-radius:20px; padding:2.5rem 2rem; max-width:320px; width:100%; text-align:center; backdrop-filter:blur(8px); }
+.login-logo { font-family:'Cormorant Garamond',serif; font-size:2.8rem; font-weight:300; color:var(--tc); letter-spacing:.15em; margin-bottom:.2rem; }
+.login-sub { font-size:.68rem; letter-spacing:.25em; text-transform:uppercase; color:var(--tc); margin-bottom:1.8rem; }
+.login-label { font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ts); display:block; text-align:left; margin-bottom:.4rem; }
+.login-input { width:100%; padding:.75rem 1rem; background:rgba(255,255,255,.7); border:1px solid rgba(181,82,42,.2); border-radius:10px; font-family:'Lato',sans-serif; font-size:.9rem; color:var(--td); outline:none; text-align:center; letter-spacing:.2em; margin-bottom:1rem; transition:border-color .2s; }
+.login-input:focus { border-color:var(--tc); }
+.login-btn { width:100%; padding:.85rem; background:var(--tc); color:#fff; border:none; border-radius:50px; font-family:'Lato',sans-serif; font-weight:300; font-size:.8rem; letter-spacing:.15em; text-transform:uppercase; cursor:pointer; transition:background .2s; }
+.login-btn:hover { background:var(--tc-l); }
+.login-error { font-size:.78rem; color:#c0392b; margin-top:.6rem; min-height:1rem; }
+
+/* PAGE */
+.page { max-width:560px; margin:0 auto; padding:2rem 1.2rem 4rem; display:none; }
+.page.visible { display:block; }
+
+/* HEADER */
+.admin-header { text-align:center; margin-bottom:2rem; }
+.admin-logo { font-family:'Cormorant Garamond',serif; font-size:2.5rem; font-weight:300; color:var(--tc); letter-spacing:.15em; }
+.admin-names { font-size:.65rem; letter-spacing:.28em; color:var(--tc); text-transform:uppercase; margin-bottom:.4rem; }
+.admin-badge { display:inline-block; background:rgba(181,82,42,.1); border:1px solid rgba(181,82,42,.2); border-radius:50px; padding:.3rem .9rem; font-size:.65rem; letter-spacing:.15em; text-transform:uppercase; color:var(--tm); margin-bottom:1.5rem; }
+
+/* CARD */
+.card { background:rgba(255,255,255,.55); border:1px solid rgba(181,82,42,.12); border-radius:18px; padding:1.5rem; backdrop-filter:blur(6px); margin-bottom:1.5rem; }
+.card-title { font-family:'Cormorant Garamond',serif; font-size:1.2rem; color:var(--tc); margin-bottom:1.2rem; font-weight:400; }
+
+/* FORM */
+.fgroup { margin-bottom:.9rem; }
+.flabel { display:block; font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ts); margin-bottom:.35rem; }
+.finput, .fselect, .ftextarea {
+  width:100%; padding:.65rem .85rem; background:rgba(255,255,255,.7); border:1px solid rgba(181,82,42,.18);
+  border-radius:10px; font-family:'Lato',sans-serif; font-size:.84rem; color:var(--td); outline:none; transition:border-color .2s;
+}
+.finput:focus, .fselect:focus, .ftextarea:focus { border-color:var(--tc); }
+.ftextarea { resize:vertical; min-height:60px; }
+.frow { display:grid; grid-template-columns:1fr 1fr; gap:.8rem; }
+.fhint { font-size:.68rem; color:var(--ts); margin-top:.25rem; }
+.fextra { margin-top:.6rem; }
+.fextra-row { display:grid; grid-template-columns:1fr 1fr; gap:.6rem; margin-top:.6rem; }
+
+/* TIME */
+.finput-time { font-size:1.1rem; letter-spacing:.12em; text-align:center; font-family:'Cormorant Garamond',serif; color:var(--tc); font-weight:400; }
+.finput-time::placeholder { color:rgba(181,82,42,.25); font-size:1.1rem; }
+.time-preview { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:.95rem; color:var(--tm); text-align:center; padding:.5rem; background:rgba(181,82,42,.05); border-radius:8px; margin-top:.4rem; min-height:2rem; }
+
+/* BTN */
+.btn-primary { width:100%; padding:.85rem; background:var(--tc); color:#fff; border:none; border-radius:50px; font-family:'Lato',sans-serif; font-weight:300; font-size:.8rem; letter-spacing:.15em; text-transform:uppercase; cursor:pointer; transition:background .2s; margin-top:.4rem; }
+.btn-primary:hover { background:var(--tc-l); }
+.btn-secondary { background:none; border:1px solid rgba(181,82,42,.25); border-radius:50px; padding:.5rem 1.1rem; font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ts); cursor:pointer; transition:all .2s; }
+.btn-secondary:hover { border-color:var(--tc); color:var(--tc); }
+
+/* EVENTS LIST */
+.evt-row { border-bottom:1px solid rgba(181,82,42,.08); padding:.75rem 0; }
+.evt-row:last-child { border-bottom:none; }
+.evt-row-top { display:flex; align-items:flex-start; justify-content:space-between; gap:.5rem; }
+.evt-row-date { font-family:'Cormorant Garamond',serif; font-size:1rem; color:var(--tc); min-width:90px; }
+.evt-row-info { flex:1; }
+.evt-row-name { font-size:.85rem; color:var(--td); font-weight:400; }
+.evt-row-detail { font-size:.72rem; color:var(--ts); margin-top:2px; }
+.evt-type-badge { display:inline-block; font-size:.58rem; letter-spacing:.12em; text-transform:uppercase; padding:2px 7px; border-radius:10px; margin-top:3px; }
+.badge-immersion { background:rgba(168,205,216,.4); color:#2a6070; }
+.badge-concert { background:rgba(201,168,76,.3); color:#6b4a10; }
+.evt-actions { display:flex; gap:.4rem; }
+.btn-icon { background:none; border:none; cursor:pointer; font-size:.95rem; padding:4px 6px; border-radius:6px; transition:background .15s; }
+.btn-edit { color:var(--tc); }
+.btn-edit:hover { background:rgba(181,82,42,.1); }
+.btn-del { color:var(--ts); }
+.btn-del:hover { background:rgba(192,57,43,.1); color:#c0392b; }
+
+/* SETTINGS */
+.setting-label { font-size:.8rem; color:var(--tm); }
+.setting-sub { font-size:.68rem; color:var(--ts); margin-top:2px; margin-bottom:.6rem; }
+
+/* EXPORT/IMPORT */
+.btn-import-label { display:inline-block; background:none; border:1px solid rgba(181,82,42,.25); border-radius:50px; padding:.5rem 1.1rem; font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ts); cursor:pointer; transition:all .2s; white-space:nowrap; }
+.btn-import-label:hover { border-color:var(--tc); color:var(--tc); }
+.import-preview { background:rgba(181,82,42,.05); border-radius:10px; padding:.8rem 1rem; font-size:.78rem; color:var(--tm); line-height:1.7; border:1px solid rgba(181,82,42,.1); }
+.import-preview strong { color:var(--tc); }
+
+/* TOAST */
+.toast { position:fixed; bottom:2rem; left:50%; transform:translateX(-50%) translateY(10px); background:var(--tc); color:#fff; padding:.7rem 1.5rem; border-radius:50px; font-size:.78rem; letter-spacing:.08em; opacity:0; transition:all .3s; pointer-events:none; z-index:500; white-space:nowrap; }
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+/* EDIT MODE */
+.card.edit-mode { border-color:var(--tc); box-shadow:0 0 0 3px rgba(181,82,42,.12); }
+.edit-indicator { font-size:.72rem; color:var(--tc); letter-spacing:.1em; text-transform:uppercase; margin-bottom:.8rem; display:none; }
+.edit-indicator.visible { display:block; }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">S·E·A</div>
+    <div class="login-sub">Administration</div>
+    <label class="login-label">Mot de passe</label>
+    <input class="login-input" type="password" id="pwdInput" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkPwd()">
+    <button class="login-btn" onclick="checkPwd()">Accéder</button>
+    <div class="login-error" id="loginError"></div>
+  </div>
+</div>
+
+<!-- PAGE ADMIN -->
+<div class="page" id="adminPage">
+  <div class="admin-header">
+    <div class="admin-logo">S·E·A</div>
+    <div class="admin-names">Samé · Émilie · Alicia</div>
+    <div class="admin-badge">⚙ Gestion du calendrier</div>
+  </div>
+
+  <!-- FORMULAIRE -->
+  <div class="card" id="formCard">
+    <div class="card-title" id="formTitle">Ajouter un événement</div>
+    <div class="edit-indicator" id="editIndicator">✏ Mode édition — modifier puis valider</div>
+
+    <div class="fgroup">
+      <label class="flabel">Titre</label>
+      <input class="finput" type="text" id="fTitle" placeholder="Ex: Immersion Sonore">
+    </div>
+
+    <div class="frow">
+      <div class="fgroup">
+        <label class="flabel">Date</label>
+        <input class="finput" type="date" id="fDate">
+      </div>
+      <div class="fgroup">
+        <label class="flabel">Type</label>
+        <select class="fselect" id="fType">
+          <option value="immersion">Immersion sonore</option>
+          <option value="concert">Concert</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="frow">
+      <div class="fgroup">
+        <label class="flabel">Heure début</label>
+        <input class="finput finput-time" type="text" id="fTimeStart" placeholder="00:00" maxlength="5" inputmode="numeric" autocomplete="off">
+      </div>
+      <div class="fgroup">
+        <label class="flabel">Heure fin</label>
+        <input class="finput finput-time" type="text" id="fTimeEnd" placeholder="00:00" maxlength="5" inputmode="numeric" autocomplete="off">
+      </div>
+    </div>
+    <div class="time-preview" id="timePreview">—</div>
+
+    <div class="fgroup" style="margin-top:.9rem">
+      <label class="flabel">Lieu</label>
+      <select class="fselect" id="fPlaceSelect" onchange="onPlaceChange()">
+        <option value="">— Sans lieu —</option>
+      </select>
+      <div class="fextra" id="fPlaceOtherWrap" style="display:none">
+        <div class="frow">
+          <input class="finput" type="text" id="fPlaceOther" placeholder="Nom du lieu, Ville">
+          <input class="finput" type="text" id="fPlaceMapsLabel" placeholder="Nom affiché (court)">
+        </div>
+      </div>
+    </div>
+
+    <div class="fgroup">
+      <label class="flabel">Lien Google Maps du lieu</label>
+      <input class="finput" type="url" id="fMaps" placeholder="https://maps.google.com/...">
+    </div>
+
+    <!-- BILLETTERIE -->
+    <div class="fgroup">
+      <label class="flabel">Lien billetterie</label>
+      <select class="fselect" id="fTicketSelect" onchange="onTicketChange()">
+        <option value="">— Aucun lien —</option>
+        <option value="__other__">Nouveau lien…</option>
+      </select>
+      <div class="fextra" id="fTicketOtherWrap" style="display:none">
+        <input class="finput" type="text" id="fTicketLabel" placeholder="Nom affiché (ex: Billetweb S.E.A)" style="margin-bottom:.5rem">
+        <input class="finput" type="url" id="fTicketUrl" placeholder="https://www.billetweb.fr/...">
+      </div>
+    </div>
+
+    <!-- IMAGE -->
+    <div class="fgroup">
+      <label class="flabel">Image de l'événement (800×450px)</label>
+      <select class="fselect" id="fImgSelect" onchange="onImgChange()">
+        <option value="">— Image par défaut —</option>
+        <option value="__other__">Nouvelle image…</option>
+      </select>
+      <div class="fextra" id="fImgOtherWrap" style="display:none">
+        <input class="finput" type="text" id="fImgLabel" placeholder="Nom affiché (ex: Affiche Juin 2026)" style="margin-bottom:.5rem">
+        <input class="finput" type="url" id="fImgUrl" placeholder="https://... (JPG ou WebP, 800×450px)" oninput="updateFormImgPreview()">
+      </div>
+      <div id="fImgPreviewWrap" style="display:none;margin-top:.6rem">
+        <img id="fImgPreview" src="" style="width:100%;border-radius:10px;object-fit:cover;aspect-ratio:16/9;display:block" alt="Aperçu image">
+      </div>
+    </div>
+
+    <div style="display:flex;gap:.7rem;margin-top:.6rem;" id="formBtns">
+      <button class="btn-primary" onclick="submitForm()">Ajouter l'événement</button>
+    </div>
+    <div style="display:none;gap:.7rem;margin-top:.6rem;" id="editBtns">
+      <button class="btn-primary" onclick="saveEdit()">Enregistrer les modifications</button>
+      <button class="btn-secondary" onclick="cancelEdit()">Annuler</button>
+    </div>
+  </div>
+
+  <!-- LISTE ÉVÉNEMENTS -->
+  <div class="card">
+    <div class="card-title">Événements enregistrés</div>
+    <div id="evtList"></div>
+  </div>
+
+  <!-- PARAMÈTRES -->
+  <div class="card">
+    <div class="card-title">Paramètres</div>
+    <div class="setting-label">Image par défaut</div>
+    <div class="setting-sub">Utilisée quand aucune image spécifique n'est définie pour un événement</div>
+    <div class="frow" style="margin-bottom:.6rem">
+      <input class="finput" type="text" id="defaultImgLabel" placeholder="Nom (ex: Logo S.E.A)">
+      <input class="finput" type="url" id="defaultImgUrl" placeholder="https://... URL de l'image">
+    </div>
+    <button class="btn-primary" onclick="saveDefaultImg()">Enregistrer l'image par défaut</button>
+    <div id="defaultImgPreviewWrap" style="margin-top:.8rem;display:none">
+      <div class="fhint" id="defaultImgCurrentLabel" style="margin-bottom:.4rem;color:var(--tc)"></div>
+      <img id="defaultImgPreview" src="" style="width:100%;border-radius:10px;object-fit:cover;aspect-ratio:16/9;display:block" alt="Aperçu">
+    </div>
+  </div>
+
+  <!-- EXPORT / IMPORT -->
+  <div class="card">
+    <div class="card-title">Sauvegarde &amp; Restauration</div>
+
+    <div class="setting-label">Exporter</div>
+    <div class="setting-sub">Télécharge un fichier JSON avec tous les événements, lieux, liens et image par défaut</div>
+    <button class="btn-primary" onclick="exportData()" style="margin-bottom:1.2rem">⬇ Exporter la sauvegarde</button>
+
+    <div class="setting-label">Importer</div>
+    <div class="setting-sub">Restaure une sauvegarde depuis un fichier JSON. ⚠ Remplace toutes les données actuelles.</div>
+    <div style="display:flex;gap:.7rem;align-items:center;margin-top:.4rem">
+      <label class="btn-import-label" for="importFile">Choisir un fichier JSON</label>
+      <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+      <span id="importFileName" style="font-size:.75rem;color:var(--ts);flex:1">Aucun fichier sélectionné</span>
+    </div>
+    <div id="importConfirmWrap" style="display:none;margin-top:.8rem">
+      <div class="import-preview" id="importPreview"></div>
+      <div style="display:flex;gap:.7rem;margin-top:.8rem">
+        <button class="btn-primary" onclick="confirmImport()">✓ Confirmer l'import</button>
+        <button class="btn-secondary" onclick="cancelImport()">Annuler</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:1.5rem;">
+    <button class="btn-secondary" onclick="logout()">Se déconnecter</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const STORAGE_KEY = 'sea_events_v2';
+const DB_KEY = 'sea_db_v2';
+const DEFAULT_IMG_KEY = 'sea_default_img_v2';
+const PWD = 'sea2026';
+let editId = null;
+
+// ---- AUTH ----
+function checkPwd() {
+  const val = document.getElementById('pwdInput').value;
+  if(val === PWD) {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminPage').classList.add('visible');
+    init();
+  } else {
+    document.getElementById('loginError').textContent = 'Mot de passe incorrect.';
+    document.getElementById('pwdInput').value = '';
+  }
+}
+function logout() {
+  document.getElementById('adminPage').classList.remove('visible');
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('pwdInput').value = '';
+}
+
+// ---- DATA ----
+function loadEvents() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || getDefaults(); }
+  catch(e) { return getDefaults(); }
+}
+function saveEvents(evts) { localStorage.setItem(STORAGE_KEY, JSON.stringify(evts)); }
+
+function loadDB() {
+  try {
+    return JSON.parse(localStorage.getItem(DB_KEY)) || {
+      places: [
+        { name:"Om Chazen, La Possession", maps:"https://maps.google.com/?q=Om+Chazen+La+Possession+Reunion" },
+        { name:"Tente Rouge, Saint-Gilles", maps:"https://maps.google.com/?q=Tente+Rouge+Saint-Gilles+Reunion" }
+      ],
+      // tickets: [{label, url}]
+      tickets: [],
+      // images: [{label, url}]
+      images: []
+    };
+  } catch(e) { return { places:[], tickets:[], images:[] }; }
+}
+function saveDB(db) { localStorage.setItem(DB_KEY, JSON.stringify(db)); }
+
+function loadDefaultImg() {
+  try { return JSON.parse(localStorage.getItem(DEFAULT_IMG_KEY)) || { label:'', url:'' }; }
+  catch(e) { return { label:'', url:'' }; }
+}
+function saveDefaultImgData(obj) { localStorage.setItem(DEFAULT_IMG_KEY, JSON.stringify(obj)); }
+
+function getDefaults() {
+  return [
+    { id:1, title:"Immersion Sonore", date:"2025-04-26", timeStart:"1300", timeEnd:"1500", type:"immersion", place:"Om Chazen, La Possession", mapsLink:"https://maps.google.com/?q=Om+Chazen+La+Possession+Reunion", ticketUrl:"", imageUrl:"" },
+    { id:2, title:"Immersion Sonore", date:"2025-05-31", timeStart:"1300", timeEnd:"1500", type:"immersion", place:"Om Chazen, La Possession", mapsLink:"https://maps.google.com/?q=Om+Chazen+La+Possession+Reunion", ticketUrl:"", imageUrl:"" },
+    { id:3, title:"Immersion Sonore", date:"2025-07-05", timeStart:"1300", timeEnd:"1500", type:"immersion", place:"Om Chazen, La Possession", mapsLink:"https://maps.google.com/?q=Om+Chazen+La+Possession+Reunion", ticketUrl:"", imageUrl:"" }
+  ];
+}
+
+let events = [], db = {};
+
+function init() {
+  events = loadEvents();
+  db = loadDB();
+  // Load default img
+  const def = loadDefaultImg();
+  document.getElementById('defaultImgLabel').value = def.label || '';
+  document.getElementById('defaultImgUrl').value = def.url || '';
+  showDefaultImgPreview(def);
+  refreshPlaceSelect();
+  refreshTicketSelect();
+  refreshImgSelect();
+  renderEvtList();
+  initTimeMask('fTimeStart', 'fTimeEnd');
+  initTimeMask('fTimeEnd', null);
+  // Show default image preview under the select on load
+  const defImg = loadDefaultImg();
+  if(defImg && defImg.url) showFormImgPreview(defImg.url);
+}
+
+// ---- PLACE ----
+function refreshPlaceSelect(setCurrent) {
+  const sel = document.getElementById('fPlaceSelect');
+  const cur = setCurrent !== undefined ? setCurrent : sel.value;
+  sel.innerHTML = '<option value="">— Sans lieu —</option>';
+  db.places.forEach(p => {
+    const o = document.createElement('option');
+    o.value = p.name; o.textContent = p.name;
+    sel.appendChild(o);
+  });
+  const other = document.createElement('option');
+  other.value = '__other__'; other.textContent = 'Autre lieu…';
+  sel.appendChild(other);
+  sel.value = cur || '';
+  onPlaceChange(false);
+}
+function onPlaceChange(updateMaps=true) {
+  const sel = document.getElementById('fPlaceSelect');
+  const wrap = document.getElementById('fPlaceOtherWrap');
+  if(sel.value === '__other__') {
+    wrap.style.display='block';
+    if(updateMaps) document.getElementById('fMaps').value='';
+  } else {
+    wrap.style.display='none';
+    if(updateMaps) {
+      const found = db.places.find(p=>p.name===sel.value);
+      document.getElementById('fMaps').value = found ? (found.maps||'') : '';
+    }
+  }
+}
+function getPlaceValue() {
+  const sel = document.getElementById('fPlaceSelect');
+  if(sel.value === '__other__') {
+    const val = document.getElementById('fPlaceOther').value.trim();
+    const maps = document.getElementById('fMaps').value.trim();
+    if(val && !db.places.find(p=>p.name===val)) {
+      db.places.push({ name:val, maps });
+      saveDB(db);
+      refreshPlaceSelect(val);
+    }
+    return val;
+  }
+  // Update maps for existing place if manually changed
+  const maps = document.getElementById('fMaps').value.trim();
+  const found = db.places.find(p=>p.name===sel.value);
+  if(found && maps) { found.maps = maps; saveDB(db); }
+  return sel.value;
+}
+
+// ---- TICKET (label + url) ----
+function refreshTicketSelect(setCurrent) {
+  const sel = document.getElementById('fTicketSelect');
+  const cur = setCurrent !== undefined ? setCurrent : sel.value;
+  sel.innerHTML = '<option value="">— Aucun lien —</option>';
+  db.tickets.forEach(t => {
+    const o = document.createElement('option');
+    o.value = t.url;
+    o.textContent = t.label || (t.url.length>50 ? t.url.slice(0,48)+'…' : t.url);
+    sel.appendChild(o);
+  });
+  const other = document.createElement('option');
+  other.value='__other__'; other.textContent='Nouveau lien…';
+  sel.appendChild(other);
+  if(cur !== undefined) sel.value = cur;
+}
+function onTicketChange() {
+  const sel = document.getElementById('fTicketSelect');
+  document.getElementById('fTicketOtherWrap').style.display = sel.value==='__other__'?'block':'none';
+}
+function getTicketValue() {
+  const sel = document.getElementById('fTicketSelect');
+  if(sel.value==='__other__') {
+    const label = document.getElementById('fTicketLabel').value.trim();
+    const url = document.getElementById('fTicketUrl').value.trim();
+    if(url && !db.tickets.find(t=>t.url===url)) {
+      db.tickets.push({ label: label||url, url });
+      saveDB(db);
+      refreshTicketSelect(url);
+    }
+    return url;
+  }
+  return sel.value;
+}
+
+// ---- IMAGE (label + url) ----
+function refreshImgSelect(setCurrent) {
+  const sel = document.getElementById('fImgSelect');
+  const cur = setCurrent !== undefined ? setCurrent : sel.value;
+  sel.innerHTML = '<option value="">— Image par défaut —</option>';
+  db.images.forEach(img => {
+    const o = document.createElement('option');
+    o.value = img.url;
+    o.textContent = img.label || img.url.split('/').pop().slice(0,40);
+    sel.appendChild(o);
+  });
+  const other = document.createElement('option');
+  other.value='__other__'; other.textContent='Nouvelle image…';
+  sel.appendChild(other);
+  if(cur !== undefined) sel.value = cur;
+}
+function onImgChange() {
+  const sel = document.getElementById('fImgSelect');
+  const isOther = sel.value === '__other__';
+  document.getElementById('fImgOtherWrap').style.display = isOther ? 'block' : 'none';
+  // Show preview for existing selection
+  if(!isOther && sel.value) {
+    showFormImgPreview(sel.value);
+  } else if(!isOther) {
+    // "Image par défaut" selected — show default img preview if available
+    const def = loadDefaultImg();
+    if(def && def.url) showFormImgPreview(def.url);
+    else hideFormImgPreview();
+  } else {
+    hideFormImgPreview();
+  }
+}
+
+function updateFormImgPreview() {
+  const url = document.getElementById('fImgUrl').value.trim();
+  if(url) showFormImgPreview(url);
+  else hideFormImgPreview();
+}
+
+function showFormImgPreview(url) {
+  const wrap = document.getElementById('fImgPreviewWrap');
+  const img = document.getElementById('fImgPreview');
+  img.src = url;
+  img.onerror = function() { hideFormImgPreview(); };
+  img.onload = function() { wrap.style.display = 'block'; };
+}
+
+function hideFormImgPreview() {
+  document.getElementById('fImgPreviewWrap').style.display = 'none';
+  document.getElementById('fImgPreview').src = '';
+}
+function getImgValue() {
+  const sel = document.getElementById('fImgSelect');
+  if(sel.value==='__other__') {
+    const label = document.getElementById('fImgLabel').value.trim();
+    const url = document.getElementById('fImgUrl').value.trim();
+    if(url && !db.images.find(i=>i.url===url)) {
+      db.images.push({ label: label||url, url });
+      saveDB(db);
+      refreshImgSelect(url);
+    }
+    return url;
+  }
+  return sel.value; // '' = image par défaut
+}
+
+// ---- DEFAULT IMAGE ----
+function saveDefaultImg() {
+  const label = document.getElementById('defaultImgLabel').value.trim();
+  const url = document.getElementById('defaultImgUrl').value.trim();
+  const obj = { label, url };
+  saveDefaultImgData(obj);
+  showDefaultImgPreview(obj);
+  toast('Image par défaut enregistrée ✓');
+}
+function showDefaultImgPreview(obj) {
+  const wrap = document.getElementById('defaultImgPreviewWrap');
+  const lbl = document.getElementById('defaultImgCurrentLabel');
+  const img = document.getElementById('defaultImgPreview');
+  if(obj.url) {
+    wrap.style.display='block';
+    lbl.textContent = obj.label ? `Actuelle : ${obj.label}` : 'Image actuelle';
+    img.src = obj.url;
+  } else {
+    wrap.style.display='none';
+  }
+}
+
+// ---- TIME MASK ----
+function initTimeMask(inputId, nextInputId) {
+  const el = document.getElementById(inputId);
+  el.addEventListener('keydown', function(e) {
+    if(['Tab','ArrowLeft','ArrowRight'].includes(e.key)) return;
+    if(e.key === 'Backspace') {
+      e.preventDefault();
+      let raw = el.value.replace(':','');
+      raw = raw.slice(0,-1);
+      el.value = applyMask(raw);
+      updateTimePreview();
+      return;
+    }
+    if(e.key === 'Delete') { e.preventDefault(); el.value=''; updateTimePreview(); return; }
+    if(!/^\d$/.test(e.key)) { e.preventDefault(); return; }
+    e.preventDefault();
+    let raw = el.value.replace(':','');
+    if(raw.length >= 4) return;
+    raw += e.key;
+    // Smart validation
+    if(raw.length === 1 && parseInt(raw) > 2) raw = '0' + raw;
+    if(raw.length === 2 && parseInt(raw) > 23) raw = '2' + raw[1];
+    if(raw.length === 3 && parseInt(raw[2]) > 5) raw = raw.slice(0,2) + '0' + raw[2];
+    el.value = applyMask(raw);
+    updateTimePreview();
+    if(raw.length === 4 && nextInputId) document.getElementById(nextInputId).focus();
+  });
+}
+
+function applyMask(raw) {
+  // ': ' appears after 2nd digit
+  if(raw.length === 0) return '';
+  if(raw.length === 1) return raw;
+  // After 2nd digit: always show HH:
+  return raw.slice(0,2) + ':' + raw.slice(2);
+}
+
+function getTimeRaw(inputId) {
+  return document.getElementById(inputId).value.replace(':','');
+}
+function setTimeMasked(inputId, raw) {
+  if(!raw) { document.getElementById(inputId).value=''; return; }
+  const digits = raw.replace(':','').padStart(4,'0');
+  document.getElementById(inputId).value = applyMask(digits);
+}
+function formatTime(t) {
+  if(!t || t.length < 3) return '';
+  const s = t.replace(':','').padStart(4,'0');
+  return s.slice(0,2)+'h'+s.slice(2);
+}
+function updateTimePreview() {
+  const s = getTimeRaw('fTimeStart');
+  const e = getTimeRaw('fTimeEnd');
+  const prev = document.getElementById('timePreview');
+  if(s.length===4 && e.length===4) prev.textContent = `de ${formatTime(s)} à ${formatTime(e)}`;
+  else if(s.length>=2) prev.textContent = `à partir de ${formatTime(s)}`;
+  else prev.textContent = '—';
+}
+
+// ---- FORM SUBMIT ----
+function submitForm() {
+  const title = document.getElementById('fTitle').value.trim();
+  const date = document.getElementById('fDate').value;
+  if(!title||!date) { toast('Le titre et la date sont obligatoires.'); return; }
+  const place = getPlaceValue();
+  const ticketUrl = getTicketValue();
+  const imageUrl = getImgValue();
+  const evt = {
+    id: Date.now(), title, date,
+    timeStart: getTimeRaw('fTimeStart'),
+    timeEnd: getTimeRaw('fTimeEnd'),
+    type: document.getElementById('fType').value,
+    place,
+    mapsLink: document.getElementById('fMaps').value.trim(),
+    ticketUrl, imageUrl
+  };
+  events.push(evt);
+  saveEvents(events);
+  resetForm();
+  renderEvtList();
+  toast('Événement ajouté ✓');
+}
+
+function resetForm() {
+  ['fTitle','fDate','fTimeStart','fTimeEnd','fMaps','fPlaceOther','fPlaceMapsLabel','fTicketLabel','fTicketUrl','fImgLabel','fImgUrl'].forEach(id=>{
+    const el = document.getElementById(id); if(el) el.value='';
+  });
+  document.getElementById('fType').value='immersion';
+  document.getElementById('fPlaceSelect').value='';
+  document.getElementById('fTicketSelect').value='';
+  document.getElementById('fImgSelect').value='';
+  ['fPlaceOtherWrap','fTicketOtherWrap','fImgOtherWrap'].forEach(id=>document.getElementById(id).style.display='none');
+  hideFormImgPreview();
+  document.getElementById('timePreview').textContent='—';
+  editId=null;
+  document.getElementById('formTitle').textContent='Ajouter un événement';
+  document.getElementById('editIndicator').classList.remove('visible');
+  document.getElementById('formCard').classList.remove('edit-mode');
+  document.getElementById('formBtns').style.display='flex';
+  document.getElementById('editBtns').style.display='none';
+}
+
+// ---- EDIT ----
+function startEdit(id) {
+  const evt = events.find(e=>e.id===id);
+  if(!evt) return;
+  editId=id;
+  document.getElementById('fTitle').value=evt.title;
+  document.getElementById('fDate').value=evt.date;
+  setTimeMasked('fTimeStart', evt.timeStart||'');
+  setTimeMasked('fTimeEnd', evt.timeEnd||'');
+  document.getElementById('fType').value=evt.type;
+  document.getElementById('fMaps').value=evt.mapsLink||'';
+
+  // Place
+  const placeFound=db.places.find(p=>p.name===evt.place);
+  if(placeFound||!evt.place) {
+    document.getElementById('fPlaceSelect').value=evt.place||'';
+    document.getElementById('fPlaceOtherWrap').style.display='none';
+  } else {
+    document.getElementById('fPlaceSelect').value='__other__';
+    document.getElementById('fPlaceOtherWrap').style.display='block';
+    document.getElementById('fPlaceOther').value=evt.place||'';
+  }
+
+  // Ticket — store by URL
+  const ticketUrl = evt.ticketUrl||evt.ticketLink||'';
+  if(ticketUrl) {
+    if(!db.tickets.find(t=>t.url===ticketUrl)) { db.tickets.push({label:ticketUrl,url:ticketUrl}); saveDB(db); refreshTicketSelect(); }
+    document.getElementById('fTicketSelect').value=ticketUrl;
+  } else { document.getElementById('fTicketSelect').value=''; }
+  document.getElementById('fTicketOtherWrap').style.display='none';
+
+  // Image
+  const imageUrl=evt.imageUrl||'';
+  if(imageUrl) {
+    if(!db.images.find(i=>i.url===imageUrl)) { db.images.push({label:imageUrl,url:imageUrl}); saveDB(db); refreshImgSelect(); }
+    document.getElementById('fImgSelect').value=imageUrl;
+  } else { document.getElementById('fImgSelect').value=''; }
+  document.getElementById('fImgOtherWrap').style.display='none';
+
+  updateTimePreview();
+  document.getElementById('formTitle').textContent="Modifier l'événement";
+  document.getElementById('editIndicator').classList.add('visible');
+  document.getElementById('formCard').classList.add('edit-mode');
+  document.getElementById('formBtns').style.display='none';
+  document.getElementById('editBtns').style.display='flex';
+  document.getElementById('formCard').scrollIntoView({behavior:'smooth'});
+}
+
+function saveEdit() {
+  const idx=events.findIndex(e=>e.id===editId);
+  if(idx===-1) return;
+  const title=document.getElementById('fTitle').value.trim();
+  const date=document.getElementById('fDate').value;
+  if(!title||!date) { toast('Le titre et la date sont obligatoires.'); return; }
+  events[idx]={
+    id:editId, title, date,
+    timeStart:getTimeRaw('fTimeStart'),
+    timeEnd:getTimeRaw('fTimeEnd'),
+    type:document.getElementById('fType').value,
+    place:getPlaceValue(),
+    mapsLink:document.getElementById('fMaps').value.trim(),
+    ticketUrl:getTicketValue(),
+    imageUrl:getImgValue()
+  };
+  saveEvents(events);
+  resetForm();
+  renderEvtList();
+  toast('Événement modifié ✓');
+}
+
+function cancelEdit() { resetForm(); }
+
+function deleteEvent(id) {
+  if(!confirm('Supprimer cet événement ?')) return;
+  events=events.filter(e=>e.id!==id);
+  saveEvents(events);
+  renderEvtList();
+  toast('Événement supprimé');
+}
+
+// ---- RENDER LIST ----
+const MONTHS=['Jan','Fév','Mar','Avr','Mai','Juin','Juil','Aoû','Sep','Oct','Nov','Déc'];
+function renderEvtList() {
+  const list=document.getElementById('evtList');
+  if(!events.length) { list.innerHTML='<div style="text-align:center;color:var(--ts);font-style:italic;padding:1rem;font-size:.85rem;">Aucun événement enregistré.</div>'; return; }
+  const sorted=[...events].sort((a,b)=>new Date(a.date)-new Date(b.date));
+  list.innerHTML=sorted.map(e=>{
+    const [y,m,d]=e.date.split('-');
+    const timeStr=e.timeStart&&e.timeEnd?`de ${formatTime(e.timeStart)} à ${formatTime(e.timeEnd)}`:'';
+    return `<div class="evt-row">
+      <div class="evt-row-top">
+        <div class="evt-row-date">${parseInt(d)} ${MONTHS[parseInt(m)-1]} ${y}</div>
+        <div class="evt-row-info">
+          <div class="evt-row-name">${e.title}</div>
+          ${e.place?`<div class="evt-row-detail">📍 ${e.place}</div>`:''}
+          ${timeStr?`<div class="evt-row-detail">🕐 ${timeStr}</div>`:''}
+          <span class="evt-type-badge badge-${e.type}">${e.type==='immersion'?'Immersion':'Concert'}</span>
+        </div>
+        <div class="evt-actions">
+          <button class="btn-icon btn-edit" onclick="startEdit(${e.id})" title="Modifier">✏️</button>
+          <button class="btn-icon btn-del" onclick="deleteEvent(${e.id})" title="Supprimer">✕</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ---- EXPORT ----
+function exportData() {
+  const payload = {
+    version: 2,
+    exportedAt: new Date().toISOString(),
+    events: events,
+    db: db,
+    defaultImg: loadDefaultImg()
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const d = new Date();
+  const dateStr = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  a.href = url;
+  a.download = `sea-sauvegarde-${dateStr}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('Sauvegarde exportée ✓');
+}
+
+// ---- IMPORT ----
+let pendingImport = null;
+
+function importData(e) {
+  const file = e.target.files[0];
+  if(!file) return;
+  document.getElementById('importFileName').textContent = file.name;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if(!data.events || !Array.isArray(data.events)) {
+        toast('Fichier invalide — aucun événement trouvé.');
+        return;
+      }
+      pendingImport = data;
+      // Show preview
+      const evtCount = data.events.length;
+      const placeCount = data.db?.places?.length || 0;
+      const ticketCount = data.db?.tickets?.length || 0;
+      const imgCount = data.db?.images?.length || 0;
+      const defImg = data.defaultImg?.label || data.defaultImg?.url || '—';
+      const exportedAt = data.exportedAt ? new Date(data.exportedAt).toLocaleDateString('fr-FR', {day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'}) : '—';
+      document.getElementById('importPreview').innerHTML = `
+        <strong>Aperçu de la sauvegarde</strong><br>
+        📅 Exportée le : ${exportedAt}<br>
+        🎵 Événements : <strong>${evtCount}</strong><br>
+        📍 Lieux : ${placeCount}<br>
+        🎟 Liens billetterie : ${ticketCount}<br>
+        🖼 Images : ${imgCount}<br>
+        🖼 Image par défaut : ${defImg}
+      `;
+      document.getElementById('importConfirmWrap').style.display = 'block';
+    } catch(err) {
+      toast('Erreur de lecture du fichier JSON.');
+    }
+  };
+  reader.readAsText(file);
+}
+
+function confirmImport() {
+  if(!pendingImport) return;
+  // Restore events
+  events = pendingImport.events;
+  saveEvents(events);
+  // Restore db
+  if(pendingImport.db) { db = pendingImport.db; saveDB(db); }
+  // Restore default img
+  if(pendingImport.defaultImg) {
+    saveDefaultImgData(pendingImport.defaultImg);
+    document.getElementById('defaultImgLabel').value = pendingImport.defaultImg.label || '';
+    document.getElementById('defaultImgUrl').value = pendingImport.defaultImg.url || '';
+    showDefaultImgPreview(pendingImport.defaultImg);
+  }
+  refreshPlaceSelect();
+  refreshTicketSelect();
+  refreshImgSelect();
+  renderEvtList();
+  cancelImport();
+  toast(`Import réussi — ${events.length} événement(s) restauré(s) ✓`);
+}
+
+function cancelImport() {
+  pendingImport = null;
+  document.getElementById('importConfirmWrap').style.display = 'none';
+  document.getElementById('importFileName').textContent = 'Aucun fichier sélectionné';
+  document.getElementById('importFile').value = '';
+}
+
+// ---- TOAST ----
+function toast(msg) {
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+</script>
+</body>
+</html>
