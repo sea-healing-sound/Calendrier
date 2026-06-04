@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>S·E·A — Administration</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root { --tc:#B5522A; --tc-l:#d4724a; --td:#3a2a1e; --tm:#6b4c38; --ts:#9a7a68; }
+body { font-family:'Lato',sans-serif; font-weight:300; background:linear-gradient(160deg,#cde4ec 0%,#ddecd4 30%,#f0e8d8 60%,#e8d4d0 100%); min-height:100vh; color:var(--td); }
+#loginScreen { position:fixed; inset:0; background:linear-gradient(160deg,#cde4ec 0%,#ddecd4 40%,#f0e8d8 70%,#e8d4d0 100%); display:flex; align-items:center; justify-content:center; z-index:999; padding:1.5rem; }
+.login-card { background:rgba(255,255,255,.65); border:1px solid rgba(181,82,42,.18); border-radius:20px; padding:2.5rem 2rem; max-width:320px; width:100%; text-align:center; backdrop-filter:blur(8px); }
+.login-logo { font-family:'Cormorant Garamond',serif; font-size:2.8rem; font-weight:300; color:var(--tc); letter-spacing:.15em; margin-bottom:.2rem; }
+.login-sub { font-size:.68rem; letter-spacing:.25em; text-transform:uppercase; color:var(--tc); margin-bottom:1.8rem; }
+.login-label { font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ts); display:block; text-align:left; margin-bottom:.4rem; }
+.login-input { width:100%; padding:.75rem 1rem; background:rgba(255,255,255,.7); border:1px solid rgba(181,82,42,.2); border-radius:10px; font-family:'Lato',sans-serif; font-size:.9rem; color:var(--td); outline:none; text-align:center; letter-spacing:.2em; margin-bottom:1rem; transition:border-color .2s; }
+.login-input:focus { border-color:var(--tc); }
+.login-btn { width:100%; padding:.85rem; background:var(--tc); color:#fff; border:none; border-radius:50px; font-family:'Lato',sans-serif; font-weight:300; font-size:.8rem; letter-spacing:.15em; text-transform:uppercase; cursor:pointer; transition:background .2s; }
+.login-btn:hover { background:var(--tc-l); }
+.login-error { font-size:.78rem; color:#c0392b; margin-top:.6rem; min-height:1rem; }
+.page { max-width:560px; margin:0 auto; padding:2rem 1.2rem 4rem; display:none; }
+.page.visible { display:block; }
+.admin-header { text-align:center; margin-bottom:2rem; }
+.admin-logo { font-family:'Cormorant Garamond',serif; font-size:2.5rem; font-weight:300; color:var(--tc); letter-spacing:.15em; }
+.admin-names { font-size:.65rem; letter-spacing:.28em; color:var(--tc); text-transform:uppercase; margin-bottom:.4rem; }
+.admin-badge { display:inline-block; background:rgba(181,82,42,.1); border:1px solid rgba(181,82,42,.2); border-radius:50px; padding:.3rem .9rem; font-size:.65rem; letter-spacing:.15em; text-transform:uppercase; color:var(--tm); margin-bottom:1.5rem; }
+.card { background:rgba(255,255,255,.55); border:1px solid rgba(181,82,42,.12); border-radius:18px; padding:1.5rem; backdrop-filter:blur(6px); margin-bottom:1.5rem; }
+.card-title { font-family:'Cormorant Garamond',serif; font-size:1.2rem; color:var(--tc); margin-bottom:1.2rem; font-weight:400; }
+.fgroup { margin-bottom:.9rem; }
+.flabel { display:block; font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ts); margin-bottom:.35rem; }
+.finput, .fselect { width:100%; padding:.65rem .85rem; background:rgba(255,255,255,.7); border:1px solid rgba(181,82,42,.18); border-radius:10px; font-family:'Lato',sans-serif; font-size:.84rem; color:var(--td); outline:none; transition:border-color .2s; }
+.finput:focus, .fselect:focus { border-color:var(--tc); }
+.frow { display:grid; grid-template-columns:1fr 1fr; gap:.8rem; }
+.fhint { font-size:.68rem; color:var(--ts); margin-top:.25rem; }
+.fextra { margin-top:.6rem; }
+.finput-time { font-size:1.1rem; letter-spacing:.12em; text-align:center; font-family:'Cormorant Garamond',serif; color:var(--tc); font-weight:400; }
+.finput-time::placeholder { color:rgba(181,82,42,.25); font-size:1.1rem; }
+.time-preview { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:.95rem; color:var(--tm); text-align:center; padding:.5rem; background:rgba(181,82,42,.05); border-radius:8px; margin-top:.4rem; min-height:2rem; }
+.btn-primary { width:100%; padding:.85rem; background:var(--tc); color:#fff; border:none; border-radius:50px; font-family:'Lato',sans-serif; font-weight:300; font-size:.8rem; letter-spacing:.15em; text-transform:uppercase; cursor:pointer; transition:background .2s; margin-top:.4rem; }
+.btn-primary:hover { background:var(--tc-l); }
+.btn-primary:disabled { background:rgba(181,82,42,.35); cursor:not-allowed; }
+.btn-secondary { background:none; border:1px solid rgba(181,82,42,.25); border-radius:50px; padding:.5rem 1.1rem; font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ts); cursor:pointer; transition:all .2s; }
+.btn-secondary:hover { border-color:var(--tc); color:var(--tc); }
+.evt-row { border-bottom:1px solid rgba(181,82,42,.08); padding:.75rem 0; }
+.evt-row:last-child { border-bottom:none; }
+.evt-row-top { display:flex; align-items:flex-start; justify-content:space-between; gap:.5rem; }
+.evt-row-date { font-family:'Cormorant Garamond',serif; font-size:1rem; color:var(--tc); min-width:90px; }
+.evt-row-info { flex:1; }
+.evt-row-name { font-size:.85rem; color:var(--td); font-weight:400; }
+.evt-row-detail { font-size:.72rem; color:var(--ts); margin-top:2px; }
+.evt-type-badge { display:inline-block; font-size:.58rem; letter-spacing:.12em; text-transform:uppercase; padding:2px 7px; border-radius:10px; margin-top:3px; }
+.badge-immersion { background:rgba(168,205,216,.4); color:#2a6070; }
+.badge-concert { background:rgba(201,168,76,.3); color:#6b4a10; }
+.evt-actions { display:flex; gap:.4rem; }
+.btn-icon { background:none; border:none; cursor:pointer; font-size:.95rem; padding:4px 6px; border-radius:6px; transition:background .15s; }
+.btn-edit { color:var(--tc); }
+.btn-edit:hover { background:rgba(181,82,42,.1); }
+.btn-del { color:var(--ts); }
+.btn-del:hover { background:rgba(192,57,43,.1); color:#c0392b; }
+.setting-label { font-size:.8rem; color:var(--tm); font-weight:400; }
+.setting-sub { font-size:.68rem; color:var(--ts); margin-top:2px; margin-bottom:.6rem; }
+.save-status { text-align:center; font-size:.75rem; color:var(--ts); margin-top:.6rem; min-height:1.2rem; font-style:italic; }
+.save-status.saving { color:var(--tc); }
+.save-status.ok { color:#2a7a4a; }
+.save-status.err { color:#c0392b; }
+.btn-import-label { display:inline-block; background:none; border:1px solid rgba(181,82,42,.25); border-radius:50px; padding:.5rem 1.1rem; font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ts); cursor:pointer; transition:all .2s; white-space:nowrap; }
+.btn-import-label:hover { border-color:var(--tc); color:var(--tc); }
+.import-preview { background:rgba(181,82,42,.05); border-radius:10px; padding:.8rem 1rem; font-size:.78rem; color:var(--tm); line-height:1.7; border:1px solid rgba(181,82,42,.1); }
+.import-preview strong { color:var(--tc); }
+.card.edit-mode { border-color:var(--tc); box-shadow:0 0 0 3px rgba(181,82,42,.12); }
+.edit-indicator { font-size:.72rem; color:var(--tc); letter-spacing:.1em; text-transform:uppercase; margin-bottom:.8rem; display:none; }
+.edit-indicator.visible { display:block; }
+.toast { position:fixed; bottom:2rem; left:50%; transform:translateX(-50%) translateY(10px); background:var(--tc); color:#fff; padding:.7rem 1.5rem; border-radius:50px; font-size:.78rem; letter-spacing:.08em; opacity:0; transition:all .3s; pointer-events:none; z-index:500; white-space:nowrap; }
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">S·E·A</div>
+    <div class="login-sub">Administration</div>
+    <label class="login-label">Mot de passe</label>
+    <input class="login-input" type="password" id="pwdInput" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkPwd()">
+    <button class="login-btn" onclick="checkPwd()">Accéder</button>
+    <div class="login-error" id="loginError"></div>
+  </div>
+</div>
+
+<div class="page" id="adminPage">
+  <div class="admin-header">
+    <div class="admin-logo">S·E·A</div>
+    <div class="admin-names">Samé · Émilie · Alicia</div>
+    <div class="admin-badge">⚙ Gestion du calendrier</div>
+  </div>
+
+  <div class="card" id="formCard">
+    <div class="card-title" id="formTitle">Ajouter un événement</div>
+    <div class="edit-indicator" id="editIndicator">✏ Mode édition — modifier puis valider</div>
+    <div class="fgroup">
+      <label class="flabel">Titre</label>
+      <input class="finput" type="text" id="fTitle" placeholder="Ex: Immersion Sonore">
+    </div>
+    <div class="frow">
+      <div class="fgroup">
+        <label class="flabel">Date</label>
+        <input class="finput" type="date" id="fDate">
+      </div>
+      <div class="fgroup">
+        <label class="flabel">Type</label>
+        <select class="fselect" id="fType">
+          <option value="immersion">Immersion sonore</option>
+          <option value="concert">Concert</option>
+        </select>
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fgroup">
+        <label class="flabel">Heure début</label>
+        <input class="finput finput-time" type="text" id="fTimeStart" placeholder="00:00" maxlength="5" inputmode="numeric" autocomplete="off">
+      </div>
+      <div class="fgroup">
+        <label class="flabel">Heure fin</label>
+        <input class="finput finput-time" type="text" id="fTimeEnd" placeholder="00:00" maxlength="5" inputmode="numeric" autocomplete="off">
+      </div>
+    </div>
+    <div class="time-preview" id="timePreview">—</div>
+    <div class="fgroup" style="margin-top:.9rem">
+      <label class="flabel">Lieu</label>
+      <select class="fselect" id="fPlaceSelect" onchange="onPlaceChange()">
+        <option value="">— Sans lieu —</option>
+      </select>
+      <div class="fextra" id="fPlaceOtherWrap" style="display:none">
+        <input class="finput" type="text" id="fPlaceOther" placeholder="Nom du lieu, Ville" style="margin-bottom:.5rem">
+      </div>
+    </div>
+    <div class="fgroup">
+      <label class="flabel">Lien Google Maps</label>
+      <input class="finput" type="url" id="fMaps" placeholder="https://maps.google.com/...">
+    </div>
+    <div class="fgroup">
+      <label class="flabel">Lien billetterie</label>
+      <select class="fselect" id="fTicketSelect" onchange="onTicketChange()">
+        <option value="">— Aucun lien —</option>
+        <option value="__other__">Nouveau lien…</option>
+      </select>
+      <div class="fextra" id="fTicketOtherWrap" style="display:none">
+        <input class="finput" type="text" id="fTicketLabel" placeholder="Nom affiché (ex: Billetweb S.E.A)" style="margin-bottom:.5rem">
+        <input class="finput" type="url" id="fTicketUrl" placeholder="https://www.billetweb.fr/...">
+      </div>
+    </div>
+    <div class="fgroup">
+      <label class="flabel">Image (800×450px)</label>
+      <select class="fselect" id="fImgSelect" onchange="onImgChange()">
+        <option value="">— Image par défaut —</option>
+        <option value="__other__">Nouvelle image…</option>
+      </select>
+      <div class="fextra" id="fImgOtherWrap" style="display:none">
+        <input class="finput" type="text" id="fImgLabel" placeholder="Nom affiché (ex: Affiche Juin 2026)" style="margin-bottom:.5rem">
+        <input class="finput" type="url" id="fImgUrl" placeholder="https://..." oninput="updateFormImgPreview()">
+      </div>
+      <div id="fImgPreviewWrap" style="display:none;margin-top:.6rem">
+        <img id="fImgPreview" src="" style="width:100%;border-radius:10px;object-fit:cover;aspect-ratio:16/9;display:block" alt="Aperçu">
+      </div>
+    </div>
+    <div style="display:flex;gap:.7rem;margin-top:.6rem;" id="formBtns">
+      <button class="btn-primary" id="btnAdd" onclick="submitForm()">Ajouter l'événement</button>
+    </div>
+    <div style="display:none;gap:.7rem;margin-top:.6rem;" id="editBtns">
+      <button class="btn-primary" id="btnSave" onclick="saveEdit()">Enregistrer les modifications</button>
+      <button class="btn-secondary" onclick="cancelEdit()">Annuler</button>
+    </div>
+    <div class="save-status" id="formStatus"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Événements enregistrés</div>
+    <div id="evtList"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Paramètres</div>
+    <div class="setting-label">Image par défaut</div>
+    <div class="setting-sub">Utilisée quand aucune image spécifique n'est définie</div>
+    <div class="frow" style="margin-bottom:.6rem">
+      <input class="finput" type="text" id="defaultImgLabel" placeholder="Nom (ex: Logo S.E.A)">
+      <input class="finput" type="url" id="defaultImgUrl" placeholder="https://...">
+    </div>
+    <div id="defaultImgPreviewWrap" style="display:none;margin-bottom:.8rem">
+      <div class="fhint" id="defaultImgCurrentLabel" style="margin-bottom:.4rem;color:var(--tc)"></div>
+      <img id="defaultImgPreview" src="" style="width:100%;border-radius:10px;object-fit:cover;aspect-ratio:16/9;display:block" alt="Aperçu">
+    </div>
+    <button class="btn-primary" onclick="saveDefaultImg()">Enregistrer l'image par défaut</button>
+    <div class="save-status" id="settingsStatus"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Sauvegarde locale</div>
+    <div class="setting-label">Exporter</div>
+    <div class="setting-sub">Télécharge un fichier JSON de sauvegarde</div>
+    <button class="btn-primary" onclick="exportData()" style="margin-bottom:1.2rem">⬇ Exporter</button>
+    <div class="setting-label">Importer</div>
+    <div class="setting-sub">⚠ Remplace toutes les données actuelles et publie sur GitHub</div>
+    <div style="display:flex;gap:.7rem;align-items:center;margin-top:.4rem">
+      <label class="btn-import-label" for="importFile">Choisir un fichier JSON</label>
+      <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+      <span id="importFileName" style="font-size:.75rem;color:var(--ts);flex:1">Aucun fichier</span>
+    </div>
+    <div id="importConfirmWrap" style="display:none;margin-top:.8rem">
+      <div class="import-preview" id="importPreview"></div>
+      <div style="display:flex;gap:.7rem;margin-top:.8rem">
+        <button class="btn-primary" onclick="confirmImport()">✓ Confirmer</button>
+        <button class="btn-secondary" onclick="cancelImport()">Annuler</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:1.5rem;">
+    <button class="btn-secondary" onclick="logout()">Se déconnecter</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ---- CONFIG ----
+const GITHUB_TOKEN = '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';
+const GITHUB_REPO = 'sea-healing-sound/Calendrier';
+const GITHUB_FILE = 'events.json';
+const GITHUB_API  = `https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`;
+const PWD = 'sea2026';
+
+let data = { events:[], db:{ places:[], tickets:[], images:[] }, defaultImg:{ label:'', url:'' } };
+let fileSha = '';
+let editId = null;
+let pendingImport = null;
+
+// ---- AUTH ----
+function checkPwd() {
+  if(document.getElementById('pwdInput').value === PWD) {
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('adminPage').classList.add('visible');
+    loadFromGitHub();
+  } else {
+    document.getElementById('loginError').textContent='Mot de passe incorrect.';
+    document.getElementById('pwdInput').value='';
+  }
+}
+function logout() {
+  document.getElementById('adminPage').classList.remove('visible');
+  document.getElementById('loginScreen').style.display='flex';
+  document.getElementById('pwdInput').value='';
+}
+
+// ---- GITHUB READ/WRITE ----
+async function loadFromGitHub() {
+  setStatus('formStatus','Chargement depuis GitHub…','saving');
+  try {
+    const res = await fetch(GITHUB_API + '?t=' + Date.now(), {
+      headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    const json = await res.json();
+    fileSha = json.sha;
+    const decoded = JSON.parse(atob(json.content.replace(/\n/g,'')));
+    data = {
+      events: decoded.events || [],
+      db: decoded.db || { places:[
+        {name:'Om Chazen, La Possession', maps:'https://maps.google.com/?q=Om+Chazen+La+Possession+Reunion'},
+        {name:'Tente Rouge, Saint-Gilles', maps:'https://maps.google.com/?q=Tente+Rouge+Saint-Gilles+Reunion'}
+      ], tickets:[], images:[] },
+      defaultImg: decoded.defaultImg || { label:'', url:'' }
+    };
+    setStatus('formStatus','','');
+    initUI();
+  } catch(e) {
+    setStatus('formStatus','Erreur de chargement — '+e.message,'err');
+  }
+}
+
+async function saveToGitHub(message) {
+  const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+  const body = { message: message || 'Mise à jour calendrier', content, sha: fileSha };
+  const res = await fetch(GITHUB_API, {
+    method: 'PUT',
+    headers: {
+      'Authorization': `token ${GITHUB_TOKEN}`,
+      'Accept': 'application/vnd.github.v3+json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  });
+  if(!res.ok) throw new Error(await res.text());
+  const json = await res.json();
+  fileSha = json.content.sha;
+}
+
+// ---- UI INIT ----
+function initUI() {
+  document.getElementById('defaultImgLabel').value = data.defaultImg.label || '';
+  document.getElementById('defaultImgUrl').value = data.defaultImg.url || '';
+  showDefaultImgPreview(data.defaultImg);
+  refreshPlaceSelect();
+  refreshTicketSelect();
+  refreshImgSelect();
+  renderEvtList();
+  initTimeMask('fTimeStart','fTimeEnd');
+  initTimeMask('fTimeEnd',null);
+  const def = data.defaultImg;
+  if(def && def.url) showFormImgPreview(def.url);
+}
+
+// ---- PLACE ----
+function refreshPlaceSelect(setCurrent) {
+  const sel = document.getElementById('fPlaceSelect');
+  const cur = setCurrent !== undefined ? setCurrent : sel.value;
+  sel.innerHTML = '<option value="">— Sans lieu —</option>';
+  data.db.places.forEach(p => {
+    const o = document.createElement('option');
+    o.value=p.name; o.textContent=p.name; sel.appendChild(o);
+  });
+  const other = document.createElement('option');
+  other.value='__other__'; other.textContent='Autre lieu…'; sel.appendChild(other);
+  sel.value = cur || '';
+  onPlaceChange(false);
+}
+function onPlaceChange(updateMaps=true) {
+  const sel = document.getElementById('fPlaceSelect');
+  const wrap = document.getElementById('fPlaceOtherWrap');
+  if(sel.value==='__other__') {
+    wrap.style.display='block';
+    if(updateMaps) document.getElementById('fMaps').value='';
+  } else {
+    wrap.style.display='none';
+    if(updateMaps) {
+      const found = data.db.places.find(p=>p.name===sel.value);
+      document.getElementById('fMaps').value = found ? (found.maps||'') : '';
+    }
+  }
+}
+function getPlaceValue() {
+  const sel = document.getElementById('fPlaceSelect');
+  if(sel.value==='__other__') {
+    const val = document.getElementById('fPlaceOther').value.trim();
+    const maps = document.getElementById('fMaps').value.trim();
+    if(val && !data.db.places.find(p=>p.name===val)) {
+      data.db.places.push({name:val,maps});
+      refreshPlaceSelect(val);
+    }
+    return val;
+  }
+  const maps = document.getElementById('fMaps').value.trim();
+  const found = data.db.places.find(p=>p.name===sel.value);
+  if(found && maps) found.maps=maps;
+  return sel.value;
+}
+
+// ---- TICKET ----
+function refreshTicketSelect(setCurrent) {
+  const sel = document.getElementById('fTicketSelect');
+  const cur = setCurrent !== undefined ? setCurrent : sel.value;
+  sel.innerHTML = '<option value="">— Aucun lien —</option>';
+  data.db.tickets.forEach(t => {
+    const o = document.createElement('option');
+    o.value=t.url; o.textContent=t.label||(t.url.length>50?t.url.slice(0,48)+'…':t.url);
+    sel.appendChild(o);
+  });
+  const other = document.createElement('option');
+  other.value='__other__'; other.textContent='Nouveau lien…'; sel.appendChild(other);
+  if(cur !== undefined) sel.value=cur;
+}
+function onTicketChange() {
+  document.getElementById('fTicketOtherWrap').style.display = document.getElementById('fTicketSelect').value==='__other__'?'block':'none';
+}
+function getTicketValue() {
+  const sel = document.getElementById('fTicketSelect');
+  if(sel.value==='__other__') {
+    const label = document.getElementById('fTicketLabel').value.trim();
+    const url = document.getElementById('fTicketUrl').value.trim();
+    if(url && !data.db.tickets.find(t=>t.url===url)) {
+      data.db.tickets.push({label:label||url,url});
+      refreshTicketSelect(url);
+    }
+    return url;
+  }
+  return sel.value;
+}
+
+// ---- IMAGE ----
+function refreshImgSelect(setCurrent) {
+  const sel = document.getElementById('fImgSelect');
+  const cur = setCurrent !== undefined ? setCurrent : sel.value;
+  sel.innerHTML = '<option value="">— Image par défaut —</option>';
+  data.db.images.forEach(img => {
+    const o = document.createElement('option');
+    o.value=img.url; o.textContent=img.label||img.url.split('/').pop().slice(0,40);
+    sel.appendChild(o);
+  });
+  const other = document.createElement('option');
+  other.value='__other__'; other.textContent='Nouvelle image…'; sel.appendChild(other);
+  if(cur !== undefined) sel.value=cur;
+}
+function onImgChange() {
+  const sel = document.getElementById('fImgSelect');
+  const isOther = sel.value==='__other__';
+  document.getElementById('fImgOtherWrap').style.display = isOther?'block':'none';
+  if(!isOther && sel.value) showFormImgPreview(sel.value);
+  else if(!isOther) {
+    if(data.defaultImg && data.defaultImg.url) showFormImgPreview(data.defaultImg.url);
+    else hideFormImgPreview();
+  } else { hideFormImgPreview(); }
+}
+function getImgValue() {
+  const sel = document.getElementById('fImgSelect');
+  if(sel.value==='__other__') {
+    const label = document.getElementById('fImgLabel').value.trim();
+    const url = document.getElementById('fImgUrl').value.trim();
+    if(url && !data.db.images.find(i=>i.url===url)) {
+      data.db.images.push({label:label||url,url});
+      refreshImgSelect(url);
+    }
+    return url;
+  }
+  return sel.value;
+}
+function updateFormImgPreview() {
+  const url = document.getElementById('fImgUrl').value.trim();
+  if(url) showFormImgPreview(url); else hideFormImgPreview();
+}
+function showFormImgPreview(url) {
+  const wrap = document.getElementById('fImgPreviewWrap');
+  const img = document.getElementById('fImgPreview');
+  img.src=url;
+  img.onerror=()=>hideFormImgPreview();
+  img.onload=()=>{ wrap.style.display='block'; };
+}
+function hideFormImgPreview() {
+  document.getElementById('fImgPreviewWrap').style.display='none';
+  document.getElementById('fImgPreview').src='';
+}
+
+// ---- DEFAULT IMAGE ----
+function saveDefaultImg() {
+  const label = document.getElementById('defaultImgLabel').value.trim();
+  const url = document.getElementById('defaultImgUrl').value.trim();
+  data.defaultImg = {label,url};
+  showDefaultImgPreview(data.defaultImg);
+  publishData('settingsStatus','Image par défaut enregistrée ✓','Paramètres mis à jour');
+}
+function showDefaultImgPreview(obj) {
+  const wrap = document.getElementById('defaultImgPreviewWrap');
+  const lbl = document.getElementById('defaultImgCurrentLabel');
+  const img = document.getElementById('defaultImgPreview');
+  if(obj && obj.url) {
+    wrap.style.display='block';
+    lbl.textContent = obj.label ? `Actuelle : ${obj.label}` : 'Image actuelle';
+    img.src=obj.url;
+  } else { wrap.style.display='none'; }
+}
+
+// ---- TIME MASK ----
+function initTimeMask(inputId, nextInputId) {
+  const el = document.getElementById(inputId);
+  el.addEventListener('keydown', function(e) {
+    if(['Tab','ArrowLeft','ArrowRight'].includes(e.key)) return;
+    if(e.key==='Backspace') { e.preventDefault(); let r=el.value.replace(':',''); r=r.slice(0,-1); el.value=applyMask(r); updateTimePreview(); return; }
+    if(e.key==='Delete') { e.preventDefault(); el.value=''; updateTimePreview(); return; }
+    if(!/^\d$/.test(e.key)) { e.preventDefault(); return; }
+    e.preventDefault();
+    let raw=el.value.replace(':','');
+    if(raw.length>=4) return;
+    raw+=e.key;
+    if(raw.length===1 && parseInt(raw)>2) raw='0'+raw;
+    if(raw.length===2 && parseInt(raw)>23) raw='2'+raw[1];
+    if(raw.length===3 && parseInt(raw[2])>5) raw=raw.slice(0,2)+'0'+raw[2];
+    el.value=applyMask(raw);
+    updateTimePreview();
+    if(raw.length===4 && nextInputId) document.getElementById(nextInputId).focus();
+  });
+}
+function applyMask(raw) {
+  if(raw.length===0) return '';
+  if(raw.length===1) return raw;
+  return raw.slice(0,2)+':'+raw.slice(2);
+}
+function getTimeRaw(id) { return document.getElementById(id).value.replace(':',''); }
+function setTimeMasked(id, raw) {
+  if(!raw) { document.getElementById(id).value=''; return; }
+  document.getElementById(id).value=applyMask(raw.replace(':','').padStart(4,'0'));
+}
+function formatTime(t) {
+  if(!t||t.length<3) return '';
+  const s=t.replace(':','').padStart(4,'0');
+  return s.slice(0,2)+'h'+s.slice(2);
+}
+function updateTimePreview() {
+  const s=getTimeRaw('fTimeStart'), e=getTimeRaw('fTimeEnd');
+  const prev=document.getElementById('timePreview');
+  if(s.length===4&&e.length===4) prev.textContent=`de ${formatTime(s)} à ${formatTime(e)}`;
+  else if(s.length>=2) prev.textContent=`à partir de ${formatTime(s)}`;
+  else prev.textContent='—';
+}
+
+// ---- PUBLISH ----
+async function publishData(statusId, successMsg, commitMsg) {
+  setStatus(statusId,'Publication en cours…','saving');
+  setBtnsDisabled(true);
+  try {
+    await saveToGitHub(commitMsg || 'Mise à jour calendrier');
+    setStatus(statusId, successMsg || 'Publié ✓','ok');
+    toast(successMsg || 'Publié ✓');
+  } catch(e) {
+    setStatus(statusId,'Erreur : '+e.message,'err');
+    toast('Erreur de publication');
+  }
+  setBtnsDisabled(false);
+}
+function setBtnsDisabled(v) {
+  ['btnAdd','btnSave'].forEach(id=>{ const el=document.getElementById(id); if(el) el.disabled=v; });
+}
+
+// ---- FORM ----
+async function submitForm() {
+  const title=document.getElementById('fTitle').value.trim();
+  const date=document.getElementById('fDate').value;
+  if(!title||!date) { toast('Le titre et la date sont obligatoires.'); return; }
+  const evt = {
+    id:Date.now(), title, date,
+    timeStart:getTimeRaw('fTimeStart'), timeEnd:getTimeRaw('fTimeEnd'),
+    type:document.getElementById('fType').value,
+    place:getPlaceValue(),
+    mapsLink:document.getElementById('fMaps').value.trim(),
+    ticketUrl:getTicketValue(), imageUrl:getImgValue()
+  };
+  data.events.push(evt);
+  await publishData('formStatus','Événement ajouté ✓','Ajout événement : '+title);
+  resetForm();
+  renderEvtList();
+}
+
+function resetForm() {
+  ['fTitle','fDate','fTimeStart','fTimeEnd','fMaps','fPlaceOther','fTicketLabel','fTicketUrl','fImgLabel','fImgUrl'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  document.getElementById('fType').value='immersion';
+  document.getElementById('fPlaceSelect').value='';
+  document.getElementById('fTicketSelect').value='';
+  document.getElementById('fImgSelect').value='';
+  ['fPlaceOtherWrap','fTicketOtherWrap','fImgOtherWrap'].forEach(id=>document.getElementById(id).style.display='none');
+  hideFormImgPreview();
+  document.getElementById('timePreview').textContent='—';
+  editId=null;
+  document.getElementById('formTitle').textContent='Ajouter un événement';
+  document.getElementById('editIndicator').classList.remove('visible');
+  document.getElementById('formCard').classList.remove('edit-mode');
+  document.getElementById('formBtns').style.display='flex';
+  document.getElementById('editBtns').style.display='none';
+  if(data.defaultImg && data.defaultImg.url) showFormImgPreview(data.defaultImg.url);
+}
+
+function startEdit(id) {
+  const evt=data.events.find(e=>e.id===id); if(!evt) return;
+  editId=id;
+  document.getElementById('fTitle').value=evt.title;
+  document.getElementById('fDate').value=evt.date;
+  setTimeMasked('fTimeStart',evt.timeStart||'');
+  setTimeMasked('fTimeEnd',evt.timeEnd||'');
+  document.getElementById('fType').value=evt.type;
+  document.getElementById('fMaps').value=evt.mapsLink||'';
+  const pf=data.db.places.find(p=>p.name===evt.place);
+  if(pf||!evt.place) { document.getElementById('fPlaceSelect').value=evt.place||''; document.getElementById('fPlaceOtherWrap').style.display='none'; }
+  else { document.getElementById('fPlaceSelect').value='__other__'; document.getElementById('fPlaceOtherWrap').style.display='block'; document.getElementById('fPlaceOther').value=evt.place||''; }
+  const tUrl=evt.ticketUrl||'';
+  if(tUrl) { if(!data.db.tickets.find(t=>t.url===tUrl)) { data.db.tickets.push({label:tUrl,url:tUrl}); refreshTicketSelect(); } document.getElementById('fTicketSelect').value=tUrl; }
+  else document.getElementById('fTicketSelect').value='';
+  document.getElementById('fTicketOtherWrap').style.display='none';
+  const iUrl=evt.imageUrl||'';
+  if(iUrl) { if(!data.db.images.find(i=>i.url===iUrl)) { data.db.images.push({label:iUrl,url:iUrl}); refreshImgSelect(); } document.getElementById('fImgSelect').value=iUrl; showFormImgPreview(iUrl); }
+  else { document.getElementById('fImgSelect').value=''; if(data.defaultImg&&data.defaultImg.url) showFormImgPreview(data.defaultImg.url); }
+  document.getElementById('fImgOtherWrap').style.display='none';
+  updateTimePreview();
+  document.getElementById('formTitle').textContent="Modifier l'événement";
+  document.getElementById('editIndicator').classList.add('visible');
+  document.getElementById('formCard').classList.add('edit-mode');
+  document.getElementById('formBtns').style.display='none';
+  document.getElementById('editBtns').style.display='flex';
+  document.getElementById('formCard').scrollIntoView({behavior:'smooth'});
+}
+
+async function saveEdit() {
+  const idx=data.events.findIndex(e=>e.id===editId); if(idx===-1) return;
+  const title=document.getElementById('fTitle').value.trim();
+  const date=document.getElementById('fDate').value;
+  if(!title||!date) { toast('Le titre et la date sont obligatoires.'); return; }
+  data.events[idx]={
+    id:editId, title, date,
+    timeStart:getTimeRaw('fTimeStart'), timeEnd:getTimeRaw('fTimeEnd'),
+    type:document.getElementById('fType').value,
+    place:getPlaceValue(),
+    mapsLink:document.getElementById('fMaps').value.trim(),
+    ticketUrl:getTicketValue(), imageUrl:getImgValue()
+  };
+  await publishData('formStatus','Événement modifié ✓','Modification événement : '+title);
+  resetForm();
+  renderEvtList();
+}
+
+function cancelEdit() { resetForm(); }
+
+async function deleteEvent(id) {
+  const evt=data.events.find(e=>e.id===id);
+  if(!confirm('Supprimer "'+evt.title+'" ?')) return;
+  data.events=data.events.filter(e=>e.id!==id);
+  await publishData('formStatus','Événement supprimé','Suppression événement');
+  renderEvtList();
+}
+
+// ---- LIST ----
+const MONTHS=['Jan','Fév','Mar','Avr','Mai','Juin','Juil','Aoû','Sep','Oct','Nov','Déc'];
+function renderEvtList() {
+  const list=document.getElementById('evtList');
+  if(!data.events.length) { list.innerHTML='<div style="text-align:center;color:var(--ts);font-style:italic;padding:1rem;font-size:.85rem;">Aucun événement.</div>'; return; }
+  const sorted=[...data.events].sort((a,b)=>new Date(a.date)-new Date(b.date));
+  list.innerHTML=sorted.map(e=>{
+    const [y,m,d]=e.date.split('-');
+    const ts=e.timeStart&&e.timeEnd?`de ${formatTime(e.timeStart)} à ${formatTime(e.timeEnd)}`:'';
+    return `<div class="evt-row"><div class="evt-row-top">
+      <div class="evt-row-date">${parseInt(d)} ${MONTHS[parseInt(m)-1]} ${y}</div>
+      <div class="evt-row-info">
+        <div class="evt-row-name">${e.title}</div>
+        ${e.place?`<div class="evt-row-detail">📍 ${e.place}</div>`:''}
+        ${ts?`<div class="evt-row-detail">🕐 ${ts}</div>`:''}
+        <span class="evt-type-badge badge-${e.type}">${e.type==='immersion'?'Immersion':'Concert'}</span>
+      </div>
+      <div class="evt-actions">
+        <button class="btn-icon btn-edit" onclick="startEdit(${e.id})" title="Modifier">✏️</button>
+        <button class="btn-icon btn-del" onclick="deleteEvent(${e.id})" title="Supprimer">✕</button>
+      </div>
+    </div></div>`;
+  }).join('');
+}
+
+// ---- EXPORT / IMPORT ----
+function exportData() {
+  const payload={ version:3, exportedAt:new Date().toISOString(), ...data };
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  const d=new Date();
+  a.href=url; a.download=`sea-sauvegarde-${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}.json`;
+  a.click(); URL.revokeObjectURL(url);
+  toast('Sauvegarde exportée ✓');
+}
+let pendingImportData=null;
+function importData(e) {
+  const file=e.target.files[0]; if(!file) return;
+  document.getElementById('importFileName').textContent=file.name;
+  const reader=new FileReader();
+  reader.onload=function(ev) {
+    try {
+      const d=JSON.parse(ev.target.result);
+      if(!d.events||!Array.isArray(d.events)) { toast('Fichier invalide.'); return; }
+      pendingImportData=d;
+      const exp=d.exportedAt?new Date(d.exportedAt).toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'}):'—';
+      document.getElementById('importPreview').innerHTML=`<strong>Aperçu</strong><br>📅 Exportée le : ${exp}<br>🎵 Événements : <strong>${d.events.length}</strong><br>📍 Lieux : ${d.db?.places?.length||0}<br>🎟 Liens : ${d.db?.tickets?.length||0}`;
+      document.getElementById('importConfirmWrap').style.display='block';
+    } catch(err) { toast('Erreur de lecture JSON.'); }
+  };
+  reader.readAsText(file);
+}
+async function confirmImport() {
+  if(!pendingImportData) return;
+  data={ events:pendingImportData.events||[], db:pendingImportData.db||{places:[],tickets:[],images:[]}, defaultImg:pendingImportData.defaultImg||{label:'',url:''} };
+  await publishData('formStatus',`Import réussi — ${data.events.length} événement(s) ✓`,'Import sauvegarde');
+  initUI();
+  cancelImport();
+}
+function cancelImport() {
+  pendingImportData=null;
+  document.getElementById('importConfirmWrap').style.display='none';
+  document.getElementById('importFileName').textContent='Aucun fichier';
+  document.getElementById('importFile').value='';
+}
+
+// ---- HELPERS ----
+function setStatus(id, msg, type) {
+  const el=document.getElementById(id); if(!el) return;
+  el.textContent=msg; el.className='save-status'+(type?' '+type:'');
+}
+function toast(msg) {
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+</script>
+</body>
+</html>
