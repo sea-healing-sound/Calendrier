@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>S·E·A — Calendrier</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='bg' x1='0' y1='0' x2='1' y2='1'><stop offset='0%25' stop-color='%23a8d4e0'/><stop offset='35%25' stop-color='%23b8d8c8'/><stop offset='65%25' stop-color='%23dde8c0'/><stop offset='100%25' stop-color='%23cce0e8'/></linearGradient><radialGradient id='hl' cx='50%25' cy='50%25' r='50%25'><stop offset='0%25' stop-color='%23c9a84c' stop-opacity='.28'/><stop offset='60%25' stop-color='%23c9a84c' stop-opacity='.08'/><stop offset='100%25' stop-color='%23c9a84c' stop-opacity='0'/></radialGradient><radialGradient id='st' cx='50%25' cy='50%25' r='50%25'><stop offset='0%25' stop-color='%23ffffff'/><stop offset='35%25' stop-color='%23fff4a0' stop-opacity='.9'/><stop offset='70%25' stop-color='%23c9a84c' stop-opacity='.5'/><stop offset='100%25' stop-color='%23c9a84c' stop-opacity='0'/></radialGradient><radialGradient id='ct' cx='50%25' cy='50%25' r='50%25'><stop offset='0%25' stop-color='%23ffffff'/><stop offset='30%25' stop-color='%23fff4a0'/><stop offset='65%25' stop-color='%23c9a84c' stop-opacity='.6'/><stop offset='100%25' stop-color='%23c9a84c' stop-opacity='0'/></radialGradient></defs><circle cx='32' cy='32' r='32' fill='url(%23bg)'/><circle cx='32' cy='32' r='28' fill='url(%23hl)'/><circle cx='32' cy='32' r='10' stroke='%23c9a84c' stroke-width='.13' fill='none' opacity='.12'/><circle cx='32' cy='32' r='13' stroke='%23c9a84c' stroke-width='.14' fill='none' opacity='.22'/><circle cx='32' cy='32' r='17' stroke='%23c9a84c' stroke-width='.17' fill='none' opacity='.38'/><circle cx='32' cy='32' r='21' stroke='%23c9a84c' stroke-width='.2' fill='none' opacity='.52'/><circle cx='32' cy='32' r='24' stroke='%23c9a84c' stroke-width='.24' fill='none' opacity='.66'/><circle cx='32' cy='32' r='27' stroke='%23c9a84c' stroke-width='.3' fill='none' opacity='.82'/><circle cx='22' cy='23' r='11' stroke='%23c9a84c' stroke-width='.19' fill='none' opacity='.45'/><circle cx='42' cy='23' r='11' stroke='%23c9a84c' stroke-width='.19' fill='none' opacity='.45'/><circle cx='32' cy='41' r='11' stroke='%23c9a84c' stroke-width='.19' fill='none' opacity='.45'/><circle cx='32' cy='30' r='7' stroke='%23c9a84c' stroke-width='.12' fill='none' opacity='.18'/><line x1='22' y1='23' x2='42' y2='23' stroke='%23c9a84c' stroke-width='.31' opacity='.95'/><line x1='22' y1='23' x2='32' y2='41' stroke='%23c9a84c' stroke-width='.31' opacity='.95'/><line x1='42' y1='23' x2='32' y2='41' stroke='%23c9a84c' stroke-width='.31' opacity='.95'/><line x1='32' y1='30' x2='22' y2='23' stroke='%23c9a84c' stroke-width='.18' opacity='.8'/><line x1='32' y1='30' x2='42' y2='23' stroke='%23c9a84c' stroke-width='.18' opacity='.8'/><line x1='32' y1='30' x2='32' y2='41' stroke='%23c9a84c' stroke-width='.18' opacity='.8'/><circle cx='22' cy='23' r='3.8' fill='url(%23st)'/><circle cx='22' cy='23' r='1.4' fill='%23fff8c0'/><circle cx='22' cy='23' r='.6' fill='%23fff'/><circle cx='42' cy='23' r='3.8' fill='url(%23st)'/><circle cx='42' cy='23' r='1.4' fill='%23fff8c0'/><circle cx='42' cy='23' r='.6' fill='%23fff'/><circle cx='32' cy='41' r='3.8' fill='url(%23st)'/><circle cx='32' cy='41' r='1.4' fill='%23fff8c0'/><circle cx='32' cy='41' r='.6' fill='%23fff'/><circle cx='32' cy='30' r='5.4' fill='url(%23ct)'/><circle cx='32' cy='30' r='2.2' fill='%23fff8c0'/><circle cx='32' cy='30' r='1' fill='%23fff'/></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -43,6 +44,7 @@ body { font-family:'Lato',sans-serif; font-weight:300; background:linear-gradien
 .legend-dot { width:10px; height:10px; border-radius:3px; }
 .ld-immersion { background:rgba(168,205,216,.8); border:1px solid rgba(168,205,216,1); }
 .ld-concert { background:rgba(201,168,76,.5); border:1px solid rgba(201,168,76,.8); }
+.ld-cosmique { background:rgba(147,112,219,.5); border:1px solid rgba(147,112,219,.8); }
 
 /* GRILLE */
 .cal-wrap { background:rgba(255,255,255,.48); border-radius:18px; border:1px solid rgba(181,82,42,.1); backdrop-filter:blur(8px); overflow:hidden; margin-bottom:1.5rem; }
@@ -61,6 +63,7 @@ body { font-family:'Lato',sans-serif; font-weight:300; background:linear-gradien
 .chip { font-size:.48rem; text-align:center; padding:1px 3px; border-radius:3px; width:90%; }
 .chip-immersion { background:rgba(168,205,216,.45); color:#2a6070; border:1px solid rgba(168,205,216,.7); }
 .chip-concert { background:rgba(201,168,76,.3); color:#6b4a10; border:1px solid rgba(201,168,76,.5); }
+.chip-cosmique { color:#fff; border:none; }
 
 /* UPCOMING */
 .section-title { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.1rem; color:var(--tm); text-align:center; margin-bottom:1rem; letter-spacing:.05em; }
@@ -75,14 +78,15 @@ body { font-family:'Lato',sans-serif; font-weight:300; background:linear-gradien
 .ulabel { font-size:.6rem; text-transform:uppercase; letter-spacing:.18em; margin-bottom:.15rem; }
 .ulabel.immersion { color:#2a6070; }
 .ulabel.concert { color:#6b4a10; }
+.ulabel.cosmique { color:#6a3ea1; }
 .uname { font-family:'Cormorant Garamond',serif; font-size:1rem; color:var(--tc); }
 .uwhere { font-size:.7rem; color:var(--ts); margin-top:2px; }
 .uarrow { color:var(--tc); opacity:.4; }
 .no-upcoming { text-align:center; font-family:'Cormorant Garamond',serif; font-style:italic; color:var(--ts); font-size:.95rem; padding:1.5rem; }
 
 /* PHASES LUNAIRES */
-.day.full-moon { background:rgba(255,255,255,.72); }
-.day.new-moon { background:rgba(255,255,255,.62); }
+.day.full-moon { background:rgba(201,168,76,.13); }
+.day.new-moon { background:rgba(201,168,76,.13); }
 .dnum-wrap { position:relative; display:flex; align-items:center; justify-content:center; height:24px; margin-bottom:2px; }
 .moon-sym { position:absolute; right:1px; top:0; font-size:.62rem; line-height:1; }
 .moon-new-icon { position:absolute; right:1px; top:1px; width:10px; height:10px; }
@@ -93,11 +97,13 @@ body { font-family:'Lato',sans-serif; font-weight:300; background:linear-gradien
 .ocard { background:linear-gradient(145deg,#f7f3ee,#edddd6); border-radius:20px; border:1px solid rgba(181,82,42,.18); max-width:360px; width:100%; position:relative; box-shadow:0 24px 64px rgba(42,26,14,.28); overflow:hidden; }
 .oimg { width:100%; aspect-ratio:16/9; object-fit:cover; display:block; }
 .oimg-placeholder { width:100%; aspect-ratio:16/9; background:linear-gradient(135deg,#cde4ec,#ddecd4,#f0e8d8); display:flex; align-items:center; justify-content:center; }
+.oimg-cosmique { width:100%; aspect-ratio:16/9; display:flex; align-items:center; justify-content:center; font-size:3.5rem; }
 .obody { padding:1.4rem 1.4rem 1.6rem; }
 .oclose { position:absolute; top:.8rem; right:.9rem; background:rgba(247,243,238,.8); border:none; cursor:pointer; color:var(--tm); font-size:1.1rem; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; z-index:10; }
 .otype { font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; margin-bottom:.4rem; }
 .otype.immersion { color:#2a6070; }
 .otype.concert { color:#6b4a10; }
+.otype.cosmique { color:#6a3ea1; }
 .otitle { font-family:'Cormorant Garamond',serif; font-size:1.55rem; color:var(--tc); margin-bottom:.25rem; font-weight:400; }
 .odate { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:.95rem; color:var(--tm); margin-bottom:.9rem; }
 .odivider { height:1px; background:rgba(181,82,42,.12); margin-bottom:.9rem; }
@@ -153,6 +159,7 @@ body { font-family:'Lato',sans-serif; font-weight:300; background:linear-gradien
 .evt-type-badge { display:inline-block; font-size:.58rem; letter-spacing:.12em; text-transform:uppercase; padding:2px 7px; border-radius:10px; margin-top:3px; }
 .badge-immersion { background:rgba(168,205,216,.4); color:#2a6070; }
 .badge-concert { background:rgba(201,168,76,.3); color:#6b4a10; }
+.badge-cosmique { background:rgba(147,112,219,.25); color:#6a3ea1; }
 .evt-actions { display:flex; gap:.4rem; }
 .btn-icon { background:none; border:none; cursor:pointer; font-size:.95rem; padding:4px 6px; border-radius:6px; transition:background .15s; }
 .btn-edit { color:var(--tc); }
@@ -174,6 +181,14 @@ body { font-family:'Lato',sans-serif; font-weight:300; background:linear-gradien
 .import-preview strong { color:var(--tc); }
 .toast { position:fixed; bottom:2rem; left:50%; transform:translateX(-50%) translateY(10px); background:var(--tc); color:#fff; padding:.7rem 1.5rem; border-radius:50px; font-size:.78rem; letter-spacing:.08em; opacity:0; transition:all .3s; pointer-events:none; z-index:500; white-space:nowrap; }
 .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+/* ===== COULEURS COSMIQUES — sélecteur ===== */
+.color-swatches { display:flex; gap:.6rem; margin-top:.4rem; flex-wrap:wrap; }
+.color-swatch { width:32px; height:32px; border-radius:50%; cursor:pointer; border:3px solid transparent; transition:transform .15s, border-color .15s; }
+.color-swatch:hover { transform:scale(1.15); }
+.color-swatch.selected { border-color:var(--td); transform:scale(1.1); }
+.cosmic-fields { display:none; margin-top:.6rem; }
+.cosmic-fields.visible { display:block; }
 </style>
 </head>
 <body>
@@ -217,9 +232,8 @@ body { font-family:'Lato',sans-serif; font-weight:300; background:linear-gradien
   <div class="legend">
     <div class="legend-item"><div class="legend-dot ld-immersion"></div><span>Immersion sonore</span></div>
     <div class="legend-item"><div class="legend-dot ld-concert"></div><span>Concert</span></div>
-    <div class="legend-item"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.2" fill="#3a2a1e" opacity=".75"/></svg><span>Nouvelle lune</span></div>
-    <div class="legend-item"><span>🌕</span><span>Pleine lune</span></div>
-</div>
+    <div class="legend-item"><div class="legend-dot ld-cosmique"></div><span>Événement cosmique</span></div>
+  </div>
   <div class="cal-wrap">
     <div class="days-hdr">
       <div class="dname">Lun</div><div class="dname">Mar</div><div class="dname">Mer</div>
@@ -272,7 +286,7 @@ body { font-family:'Lato',sans-serif; font-weight:300; background:linear-gradien
     <div class="edit-indicator" id="editIndicator">✏ Mode édition</div>
     <div class="fgroup">
       <label class="flabel">Titre</label>
-      <input class="finput" type="text" id="fTitle" placeholder="Ex: Immersion Sonore">
+      <input class="finput" type="text" id="fTitle" placeholder="Ex: Solstice d'Été">
     </div>
     <div class="frow">
       <div class="fgroup">
@@ -281,12 +295,42 @@ body { font-family:'Lato',sans-serif; font-weight:300; background:linear-gradien
       </div>
       <div class="fgroup">
         <label class="flabel">Type</label>
-        <select class="fselect" id="fType">
+        <select class="fselect" id="fType" onchange="onTypeChange()">
           <option value="immersion">Immersion sonore</option>
           <option value="concert">Concert</option>
+          <option value="cosmique">Événement cosmique</option>
         </select>
       </div>
     </div>
+
+    <!-- Champs cosmiques (emoji + couleur) -->
+    <div class="cosmic-fields" id="cosmicFields">
+      <div class="fgroup">
+        <label class="flabel">Symbole</label>
+        <select class="fselect" id="fCosmicEmoji">
+          <option value="☀️">☀️ Solstice d'Été (Décembre)</option>
+          <option value="✨">✨ Solstice d'Hiver (Juin)</option>
+          <option value="🌸">🌸 Équinoxe de Printemps (Septembre)</option>
+          <option value="🍂">🍂 Équinoxe d'Automne (Mars)</option>
+          <option value="🌕">🌕 Pleine lune</option>
+          <option value="🌑">🌑 Nouvelle lune</option>
+          <option value="🌙">🌙 Lune</option>
+          <option value="⭐">⭐ Étoile</option>
+          <option value="🌟">🌟 Éclipse / Autre</option>
+        </select>
+      </div>
+      <div class="fgroup">
+        <label class="flabel">Couleur de l'événement</label>
+        <div class="color-swatches" id="colorSwatches">
+          <div class="color-swatch selected" style="background:#9370db" data-color="#9370db" onclick="selectColor(this)" title="Violet"></div>
+          <div class="color-swatch" style="background:#4a90c4" data-color="#4a90c4" onclick="selectColor(this)" title="Bleu indigo"></div>
+          <div class="color-swatch" style="background:#c9a84c" data-color="#c9a84c" onclick="selectColor(this)" title="Or"></div>
+          <div class="color-swatch" style="background:#e07b5a" data-color="#e07b5a" onclick="selectColor(this)" title="Corail"></div>
+          <div class="color-swatch" style="background:#5aad8f" data-color="#5aad8f" onclick="selectColor(this)" title="Turquoise"></div>
+        </div>
+      </div>
+    </div>
+
     <div class="frow">
       <div class="fgroup">
         <label class="flabel">Heure début</label>
@@ -403,9 +447,46 @@ const MONTHS = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Aoû
 const MONTHS_SHORT = ['Jan','Fév','Mar','Avr','Mai','Juin','Juil','Aoû','Sep','Oct','Nov','Déc'];
 const DAYS_FR = ['lundi','mardi','mercredi','jeudi','vendredi','samedi','dimanche'];
 
+// ===== PALETTE 5 COULEURS =====
+const COSMIC_COLORS = ['#9370db','#4a90c4','#c9a84c','#e07b5a','#5aad8f'];
+
+// ===== ÉVÉNEMENTS COSMIQUES PRÉ-CALCULÉS (GMT+4 Réunion) =====
+// Solstices & Équinoxes 2025-2027 + phases lunaires importantes
+// Hémisphère SUD (La Réunion) — saisons inversées :
+// Juin = Solstice d'Hiver | Décembre = Solstice d'Été
+// Mars = Équinoxe d'Automne | Septembre = Équinoxe de Printemps
+const COSMIC_EVENTS_BUILTIN = [
+  // 2025
+  {id:'cos-2025-eq-mars', title:'Équinoxe d\'Automne',   date:'2025-03-20', type:'cosmique', cosmicEmoji:'🍂', cosmicColor:'#e07b5a', description:'Équinoxe d\'automne — égalité du jour et de la nuit. La Terre bascule vers la saison fraîche.'},
+  {id:'cos-2025-sol-hiv',  title:'Solstice d\'Hiver',     date:'2025-06-21', type:'cosmique', cosmicEmoji:'✨', cosmicColor:'#4a90c4', description:'Solstice d\'hiver — la nuit la plus longue de l\'année. Point de retournement vers la lumière.'},
+  {id:'cos-2025-eq-sept', title:'Équinoxe de Printemps', date:'2025-09-23', type:'cosmique', cosmicEmoji:'🌸', cosmicColor:'#5aad8f', description:'Équinoxe de printemps — retour à l\'équilibre. La lumière reprend ses droits.'},
+  {id:'cos-2025-sol-ete',  title:'Solstice d\'Été',       date:'2025-12-21', type:'cosmique', cosmicEmoji:'☀️', cosmicColor:'#c9a84c', description:'Solstice d\'été — le jour le plus long. Apogée de la lumière et de la chaleur.'},
+  // 2026
+  {id:'cos-2026-eq-mars', title:'Équinoxe d\'Automne',   date:'2026-03-20', type:'cosmique', cosmicEmoji:'🍂', cosmicColor:'#e07b5a', description:'Équinoxe d\'automne — égalité du jour et de la nuit. La Terre bascule vers la saison fraîche.'},
+  {id:'cos-2026-sol-hiv',  title:'Solstice d\'Hiver',     date:'2026-06-21', type:'cosmique', cosmicEmoji:'✨', cosmicColor:'#4a90c4', description:'Solstice d\'hiver — la nuit la plus longue de l\'année. Point de retournement vers la lumière.'},
+  {id:'cos-2026-eq-sept', title:'Équinoxe de Printemps', date:'2026-09-23', type:'cosmique', cosmicEmoji:'🌸', cosmicColor:'#5aad8f', description:'Équinoxe de printemps — retour à l\'équilibre. La lumière reprend ses droits.'},
+  {id:'cos-2026-sol-ete',  title:'Solstice d\'Été',       date:'2026-12-22', type:'cosmique', cosmicEmoji:'☀️', cosmicColor:'#c9a84c', description:'Solstice d\'été — le jour le plus long. Apogée de la lumière et de la chaleur.'},
+  // 2027
+  {id:'cos-2027-eq-mars', title:'Équinoxe d\'Automne',   date:'2027-03-20', type:'cosmique', cosmicEmoji:'🍂', cosmicColor:'#e07b5a', description:'Équinoxe d\'automne — égalité du jour et de la nuit. La Terre bascule vers la saison fraîche.'},
+  {id:'cos-2027-sol-hiv',  title:'Solstice d\'Hiver',     date:'2027-06-21', type:'cosmique', cosmicEmoji:'✨', cosmicColor:'#4a90c4', description:'Solstice d\'hiver — la nuit la plus longue de l\'année. Point de retournement vers la lumière.'},
+  {id:'cos-2027-eq-sept', title:'Équinoxe de Printemps', date:'2027-09-23', type:'cosmique', cosmicEmoji:'🌸', cosmicColor:'#5aad8f', description:'Équinoxe de printemps — retour à l\'équilibre. La lumière reprend ses droits.'},
+  {id:'cos-2027-sol-ete',  title:'Solstice d\'Été',       date:'2027-12-22', type:'cosmique', cosmicEmoji:'☀️', cosmicColor:'#c9a84c', description:'Solstice d\'été — le jour le plus long. Apogée de la lumière et de la chaleur.'},
+];
+
 let appData = { events:[], db:{ places:[], tickets:[], images:[] }, defaultImg:{ label:'', url:'' } };
 let cy, cm, editId = null, pendingImportData = null;
+let selectedCosmicColor = '#9370db';
 const isAdmin = window.location.search.includes('admin');
+
+// ===== FUSION événements admin + cosmiques built-in =====
+function getAllEvents() {
+  const adminEvts = appData.events || [];
+  // On n'ajoute les built-in que s'ils ne sont pas déjà dans appData.events (par id ou date+type)
+  const builtinToAdd = COSMIC_EVENTS_BUILTIN.filter(b =>
+    !adminEvts.find(e => e.id === b.id || (e.date === b.date && e.type === 'cosmique' && e.title === b.title))
+  );
+  return [...adminEvts, ...builtinToAdd];
+}
 
 // ===== INIT =====
 async function init() {
@@ -428,7 +509,7 @@ async function init() {
   }
 }
 
-async function saveData(statusId, msg, commitMsg) {
+async function saveData(statusId, msg) {
   setStatus(statusId, 'Publication en cours…', 'saving');
   setBtnsDisabled(true);
   try {
@@ -476,6 +557,28 @@ function initAdmin() {
   initTimeMask('fTimeStart','fTimeEnd');
   initTimeMask('fTimeEnd', null);
   if(appData.defaultImg && appData.defaultImg.url) showFormImgPreview(appData.defaultImg.url);
+  onTypeChange();
+}
+
+// ===== TYPE CHANGE (affiche/masque champs cosmiques) =====
+function onTypeChange() {
+  const t = document.getElementById('fType').value;
+  document.getElementById('cosmicFields').classList.toggle('visible', t === 'cosmique');
+}
+
+// ===== SÉLECTEUR COULEUR =====
+function selectColor(el) {
+  document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedCosmicColor = el.dataset.color;
+}
+function setSelectedColor(color) {
+  selectedCosmicColor = color || '#9370db';
+  document.querySelectorAll('.color-swatch').forEach(s => {
+    s.classList.toggle('selected', s.dataset.color === selectedCosmicColor);
+  });
+  if(!document.querySelector('.color-swatch.selected'))
+    document.querySelector('.color-swatch').classList.add('selected');
 }
 
 // ===== CALENDRIER PUBLIC =====
@@ -490,43 +593,32 @@ function formatDateFR(d) {
 }
 function getEvts(y,m,d) {
   const s=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-  return appData.events.filter(e=>e.date===s);
+  return getAllEvents().filter(e=>e.date===s);
 }
-// ===== PHASES LUNAIRES (GMT+4 Réunion) =====
-// Calcul précis basé sur l'âge lunaire en jours (synodic period = 29.53059 jours)
-// Référence : nouvelle lune connue le 2000-01-06 18:14 UTC = 2000-01-06 22:14 GMT+4
-const KNOWN_NEW_MOON = Date.UTC(2000, 0, 6, 18, 14, 0); // UTC
-const SYNODIC = 29.53059;
 
+// ===== PHASES LUNAIRES (GMT+4 Réunion) =====
+const KNOWN_NEW_MOON = Date.UTC(2000, 0, 6, 18, 14, 0);
+const SYNODIC = 29.53059;
 function getMoonAge(year, month, day) {
-  // Midi GMT+4 = 08:00 UTC
   const dateUTC = Date.UTC(year, month - 1, day, 8, 0, 0);
   const elapsed = (dateUTC - KNOWN_NEW_MOON) / (1000 * 60 * 60 * 24);
   let age = elapsed % SYNODIC;
   if(age < 0) age += SYNODIC;
   return age;
 }
-
 function getMoonPhase(year, month, day) {
-  // On cherche le jour où l'âge lunaire est le plus proche de 0 (nouvelle) ou 14.765 (pleine)
-  // On compare avec le jour précédent et suivant pour trouver le minimum local
   const age = getMoonAge(year, month, day);
   const agePrev = getMoonAge(year, month, day - 1);
   const ageNext = getMoonAge(year, month, day + 1);
-
-  // Nouvelle lune : âge proche de 0 (ou wraparound près de 29.53)
   const distNew = Math.min(age, SYNODIC - age);
   const distNewPrev = Math.min(agePrev, SYNODIC - agePrev);
   const distNewNext = Math.min(ageNext, SYNODIC - ageNext);
   if(distNew < distNewPrev && distNew < distNewNext && distNew < 1.0) return 'new';
-
-  // Pleine lune : âge proche de 14.765
   const FULL = SYNODIC / 2;
   const distFull = Math.abs(age - FULL);
   const distFullPrev = Math.abs(agePrev - FULL);
   const distFullNext = Math.abs(ageNext - FULL);
   if(distFull < distFullPrev && distFull < distFullNext && distFull < 1.0) return 'full';
-
   return null;
 }
 
@@ -543,13 +635,20 @@ function render() {
     const moon=getMoonPhase(cy,cm+1,d);
     const moonClass=moon==='full'?' full-moon':moon==='new'?' new-moon':'';
     const moonSym=moon==='full'
-    ? '<span class="moon-sym">🌕</span>'
-    : moon==='new'
-    ? '<svg class="moon-new-icon" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="5" cy="5" r="4.2" fill="#3a2a1e" opacity=".75"/></svg>'
-    : '';
+      ? '<span class="moon-sym">🌕</span>'
+      : moon==='new'
+      ? '<svg class="moon-new-icon" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="5" cy="5" r="4.2" fill="#3a2a1e" opacity=".75"/></svg>'
+      : '';
     const c=document.createElement('div');
     c.className='day'+(isToday?' today':'')+(evts.length?' has-evt':'')+moonClass;
-    c.innerHTML=`<div class="dnum-wrap"><div class="dnum">${d}</div>${moonSym}</div><div class="chips">${evts.map(e=>`<div class="chip chip-${e.type}">${e.type==='immersion'?'♪':'♬'}</div>`).join('')}</div>`;
+    const chips = evts.map(e => {
+      if(e.type==='cosmique') {
+        const col = e.cosmicColor||'#9370db';
+        return `<div class="chip chip-cosmique" style="background:${col};opacity:.85">${e.cosmicEmoji||'✨'}</div>`;
+      }
+      return `<div class="chip chip-${e.type}">${e.type==='immersion'?'♪':'♬'}</div>`;
+    }).join('');
+    c.innerHTML=`<div class="dnum-wrap"><div class="dnum">${d}</div>${moonSym}</div><div class="chips">${chips}</div>`;
     if(evts.length) c.addEventListener('click',()=>showOverlay(evts[0]));
     grid.appendChild(c);
   }
@@ -557,36 +656,48 @@ function render() {
   for(let i=1;i<=rem;i++){const c=document.createElement('div');c.className='day empty other';c.innerHTML=`<div class="dnum">${i}</div>`;grid.appendChild(c);}
   renderUpcoming();
 }
+
 function showOverlay(evt) {
   const imgWrap=document.getElementById('oImgWrap');
-  const imgUrl=evt.imageUrl||(appData.defaultImg&&appData.defaultImg.url)||'';
-  if(imgUrl){const img=document.createElement('img');img.className='oimg';img.src=imgUrl;img.alt=evt.title;img.onerror=()=>{imgWrap.innerHTML='<div class="oimg-placeholder">'+svgPH()+'</div>';};imgWrap.innerHTML='';imgWrap.appendChild(img);}
-  else imgWrap.innerHTML='<div class="oimg-placeholder">'+svgPH()+'</div>';
-  document.getElementById('oType').textContent=evt.type==='immersion'?'Immersion Sonore':'Concert';
+  if(evt.type==='cosmique') {
+    const col = evt.cosmicColor||'#9370db';
+    imgWrap.innerHTML=`<div class="oimg-cosmique" style="background:linear-gradient(135deg,${col}33,${col}88)">${evt.cosmicEmoji||'✨'}</div>`;
+  } else {
+    const imgUrl=evt.imageUrl||(appData.defaultImg&&appData.defaultImg.url)||'';
+    if(imgUrl){const img=document.createElement('img');img.className='oimg';img.src=imgUrl;img.alt=evt.title;img.onerror=()=>{imgWrap.innerHTML='<div class="oimg-placeholder">'+svgPH()+'</div>';};imgWrap.innerHTML='';imgWrap.appendChild(img);}
+    else imgWrap.innerHTML='<div class="oimg-placeholder">'+svgPH()+'</div>';
+  }
+  const typeLabels={immersion:'Immersion Sonore',concert:'Concert',cosmique:'Événement Cosmique'};
+  document.getElementById('oType').textContent=typeLabels[evt.type]||evt.type;
   document.getElementById('oType').className=`otype ${evt.type}`;
   document.getElementById('oTitle').textContent=evt.title;
   document.getElementById('oDate').textContent=formatDateFR(evt.date);
   let info='';
   if(evt.timeStart&&evt.timeEnd) info+=`<span>🕐 de ${formatTime(evt.timeStart)} à ${formatTime(evt.timeEnd)}</span>`;
   if(evt.place) info+=evt.mapsLink?`<span>📍 <a href="${evt.mapsLink}" target="_blank">${evt.place}</a></span>`:`<span>📍 ${evt.place}</span>`;
+  if(evt.description) info+=`<span style="margin-top:.4rem;font-style:italic;opacity:.85">${evt.description}</span>`;
   document.getElementById('oInfo').innerHTML=info;
   const btn=document.getElementById('oBtn');
   const tUrl=evt.ticketUrl||'';
   if(tUrl){btn.href=tUrl;btn.className='obtn';btn.textContent='Réserver ma place';}
+  else if(evt.type==='cosmique'){btn.href='#';btn.className='obtn obtn-disabled';btn.textContent='Moment de contemplation';}
   else{btn.href='#';btn.className='obtn obtn-disabled';btn.textContent='Réservation bientôt disponible';}
   document.getElementById('overlay').classList.add('open');
 }
 function svgPH(){return`<svg width="60" height="60" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="28" stroke="#c9a84c" stroke-width=".8"/><circle cx="32" cy="20" r="7" stroke="#c9a84c" stroke-width=".6"/><circle cx="42" cy="37" r="7" stroke="#c9a84c" stroke-width=".6"/><circle cx="22" cy="37" r="7" stroke="#c9a84c" stroke-width=".6"/><line x1="32" y1="20" x2="42" y2="37" stroke="#c9a84c" stroke-width=".6"/><line x1="42" y1="37" x2="22" y2="37" stroke="#c9a84c" stroke-width=".6"/><line x1="22" y1="37" x2="32" y2="20" stroke="#c9a84c" stroke-width=".6"/><circle cx="32" cy="32" r="2" fill="#c9a84c" opacity=".7"/></svg>`;}
 function closeOverlay(e){if(e.target===document.getElementById('overlay'))document.getElementById('overlay').classList.remove('open');}
+
 function renderUpcoming(){
   const list=document.getElementById('upcomingList'); list.innerHTML='';
   const today=new Date(); today.setHours(0,0,0,0);
-  const up=appData.events.filter(e=>new Date(e.date)>=today).sort((a,b)=>new Date(a.date)-new Date(b.date)).slice(0,5);
+  const up=getAllEvents().filter(e=>new Date(e.date)>=today).sort((a,b)=>new Date(a.date)-new Date(b.date)).slice(0,6);
   if(!up.length){list.innerHTML='<div class="no-upcoming">Aucun événement à venir pour le moment…</div>';return;}
   up.forEach(evt=>{
     const [y,m,d]=evt.date.split('-');
     const card=document.createElement('div'); card.className='ucard';
-    card.innerHTML=`<div class="udate-box"><div class="uday">${parseInt(d)}</div><div class="umonth">${MONTHS[parseInt(m)-1]}</div></div><div class="usep"></div><div class="uinfo"><div class="ulabel ${evt.type}">${evt.type==='immersion'?'Immersion Sonore':'Concert'}</div><div class="uname">${evt.title}</div>${evt.place?`<div class="uwhere">📍 ${evt.place}</div>`:''}${evt.timeStart&&evt.timeEnd?`<div class="uwhere">🕐 de ${formatTime(evt.timeStart)} à ${formatTime(evt.timeEnd)}</div>`:''}</div><div class="uarrow">→</div>`;
+    const typeLabels={immersion:'Immersion Sonore',concert:'Concert',cosmique:'Événement Cosmique'};
+    const cosmicDot = evt.type==='cosmique' ? `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${evt.cosmicColor||'#9370db'};margin-right:4px;vertical-align:middle"></span>` : '';
+    card.innerHTML=`<div class="udate-box"><div class="uday">${parseInt(d)}</div><div class="umonth">${MONTHS[parseInt(m)-1]}</div></div><div class="usep"></div><div class="uinfo"><div class="ulabel ${evt.type}">${cosmicDot}${typeLabels[evt.type]||evt.type}${evt.type==='cosmique'?' '+evt.cosmicEmoji:''}</div><div class="uname">${evt.title}</div>${evt.place?`<div class="uwhere">📍 ${evt.place}</div>`:''}${evt.timeStart&&evt.timeEnd?`<div class="uwhere">🕐 de ${formatTime(evt.timeStart)} à ${formatTime(evt.timeEnd)}</div>`:''}</div><div class="uarrow">→</div>`;
     card.addEventListener('click',()=>showOverlay(evt));
     list.appendChild(card);
   });
@@ -677,13 +788,10 @@ function initTimeMask(inputId, nextId){
     let raw=el.value.replace(':','');if(raw.length>=4)return;
     const digit=e.key;
     let newRaw=raw+digit;
-    // Validation heure
     if(newRaw.length===1&&parseInt(newRaw)>2)newRaw='0'+newRaw;
     if(newRaw.length===2&&parseInt(newRaw)>23)newRaw=raw+'0';
-    // Validation minutes
     if(newRaw.length===3&&parseInt(newRaw[2])>5)newRaw=newRaw.slice(0,2)+'0'+newRaw[2];
     el.value=applyMask(newRaw);updateTimePreview();
-    // Saute au champ suivant seulement quand les 4 chiffres sont saisis
     if(newRaw.length===4&&nextId)document.getElementById(nextId).focus();
   });
 }
@@ -701,13 +809,22 @@ function updateTimePreview(){
 async function submitForm(){
   const title=document.getElementById('fTitle').value.trim();const date=document.getElementById('fDate').value;
   if(!title||!date){toast('Le titre et la date sont obligatoires.');return;}
-  appData.events.push({id:Date.now(),title,date,timeStart:getTimeRaw('fTimeStart'),timeEnd:getTimeRaw('fTimeEnd'),type:document.getElementById('fType').value,place:getPlaceValue(),mapsLink:document.getElementById('fMaps').value.trim(),ticketUrl:getTicketValue(),imageUrl:getImgValue()});
+  const type=document.getElementById('fType').value;
+  const evt={id:Date.now(),title,date,timeStart:getTimeRaw('fTimeStart'),timeEnd:getTimeRaw('fTimeEnd'),type,place:getPlaceValue(),mapsLink:document.getElementById('fMaps').value.trim(),ticketUrl:getTicketValue(),imageUrl:getImgValue()};
+  if(type==='cosmique'){
+    evt.cosmicEmoji=document.getElementById('fCosmicEmoji').value;
+    evt.cosmicColor=selectedCosmicColor;
+    evt.description='';
+  }
+  appData.events.push(evt);
   await saveData('formStatus','Événement ajouté ✓');
   resetForm();renderEvtList();
 }
 function resetForm(){
   ['fTitle','fDate','fTimeStart','fTimeEnd','fMaps','fPlaceOther','fTicketLabel','fTicketUrl','fImgLabel','fImgUrl'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('fType').value='immersion';
+  document.getElementById('fCosmicEmoji').value='☀️';
+  setSelectedColor('#9370db');
   document.getElementById('fPlaceSelect').value='';
   document.getElementById('fTicketSelect').value='';
   document.getElementById('fImgSelect').value='';
@@ -721,6 +838,7 @@ function resetForm(){
   document.getElementById('formBtns').style.display='flex';
   document.getElementById('editBtns').style.display='none';
   if(appData.defaultImg&&appData.defaultImg.url)showFormImgPreview(appData.defaultImg.url);
+  onTypeChange();
 }
 function startEdit(id){
   const evt=appData.events.find(e=>e.id===id);if(!evt)return;
@@ -730,6 +848,10 @@ function startEdit(id){
   setTimeMasked('fTimeStart',evt.timeStart||'');
   setTimeMasked('fTimeEnd',evt.timeEnd||'');
   document.getElementById('fType').value=evt.type;
+  if(evt.type==='cosmique'){
+    document.getElementById('fCosmicEmoji').value=evt.cosmicEmoji||'☀️';
+    setSelectedColor(evt.cosmicColor||'#9370db');
+  }
   document.getElementById('fMaps').value=evt.mapsLink||'';
   const pf=appData.db.places.find(p=>p.name===evt.place);
   if(pf||!evt.place){document.getElementById('fPlaceSelect').value=evt.place||'';document.getElementById('fPlaceOtherWrap').classList.add('hidden');}
@@ -749,12 +871,16 @@ function startEdit(id){
   document.getElementById('formBtns').style.display='none';
   document.getElementById('editBtns').style.display='flex';
   document.getElementById('formCard').scrollIntoView({behavior:'smooth'});
+  onTypeChange();
 }
 async function saveEdit(){
   const idx=appData.events.findIndex(e=>e.id===editId);if(idx===-1)return;
   const title=document.getElementById('fTitle').value.trim();const date=document.getElementById('fDate').value;
   if(!title||!date){toast('Le titre et la date sont obligatoires.');return;}
-  appData.events[idx]={id:editId,title,date,timeStart:getTimeRaw('fTimeStart'),timeEnd:getTimeRaw('fTimeEnd'),type:document.getElementById('fType').value,place:getPlaceValue(),mapsLink:document.getElementById('fMaps').value.trim(),ticketUrl:getTicketValue(),imageUrl:getImgValue()};
+  const type=document.getElementById('fType').value;
+  const evt={id:editId,title,date,timeStart:getTimeRaw('fTimeStart'),timeEnd:getTimeRaw('fTimeEnd'),type,place:getPlaceValue(),mapsLink:document.getElementById('fMaps').value.trim(),ticketUrl:getTicketValue(),imageUrl:getImgValue()};
+  if(type==='cosmique'){evt.cosmicEmoji=document.getElementById('fCosmicEmoji').value;evt.cosmicColor=selectedCosmicColor;evt.description='';}
+  appData.events[idx]=evt;
   await saveData('formStatus','Événement modifié ✓');
   resetForm();renderEvtList();
 }
@@ -772,13 +898,15 @@ function renderEvtList(){
   list.innerHTML=[...appData.events].sort((a,b)=>new Date(a.date)-new Date(b.date)).map(e=>{
     const [y,m,d]=e.date.split('-');
     const ts=e.timeStart&&e.timeEnd?`de ${formatTime(e.timeStart)} à ${formatTime(e.timeEnd)}`:'';
-    return `<div class="evt-row"><div class="evt-row-top"><div class="evt-row-date">${parseInt(d)} ${MONTHS_SHORT[parseInt(m)-1]} ${y}</div><div class="evt-row-info"><div class="evt-row-name">${e.title}</div>${e.place?`<div class="evt-row-detail">📍 ${e.place}</div>`:''}${ts?`<div class="evt-row-detail">🕐 ${ts}</div>`:''}<span class="evt-type-badge badge-${e.type}">${e.type==='immersion'?'Immersion':'Concert'}</span></div><div class="evt-actions"><button class="btn-icon btn-edit" onclick="startEdit(${e.id})" title="Modifier">✏️</button><button class="btn-icon btn-del" onclick="deleteEvent(${e.id})" title="Supprimer">✕</button></div></div></div>`;
+    const typeLabels={immersion:'Immersion',concert:'Concert',cosmique:'Cosmique'};
+    const cosmicDot = e.type==='cosmique'?`<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${e.cosmicColor||'#9370db'};margin-right:3px;vertical-align:middle"></span>`:'';
+    return `<div class="evt-row"><div class="evt-row-top"><div class="evt-row-date">${parseInt(d)} ${MONTHS_SHORT[parseInt(m)-1]} ${y}</div><div class="evt-row-info"><div class="evt-row-name">${e.type==='cosmique'?e.cosmicEmoji+' ':''} ${e.title}</div>${e.place?`<div class="evt-row-detail">📍 ${e.place}</div>`:''}${ts?`<div class="evt-row-detail">🕐 ${ts}</div>`:''}<span class="evt-type-badge badge-${e.type}">${cosmicDot}${typeLabels[e.type]||e.type}</span></div><div class="evt-actions"><button class="btn-icon btn-edit" onclick="startEdit(${e.id})" title="Modifier">✏️</button><button class="btn-icon btn-del" onclick="deleteEvent(${e.id})" title="Supprimer">✕</button></div></div></div>`;
   }).join('');
 }
 
 // ===== EXPORT / IMPORT =====
 function exportData(){
-  const blob=new Blob([JSON.stringify({version:3,exportedAt:new Date().toISOString(),...appData},null,2)],{type:'application/json'});
+  const blob=new Blob([JSON.stringify({version:4,exportedAt:new Date().toISOString(),...appData},null,2)],{type:'application/json'});
   const a=document.createElement('a');const d=new Date();
   a.href=URL.createObjectURL(blob);a.download=`sea-sauvegarde-${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}.json`;
   a.click();URL.revokeObjectURL(a.href);toast('Sauvegarde exportée ✓');
